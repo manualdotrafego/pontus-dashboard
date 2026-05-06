@@ -1,0 +1,56 @@
+name: Update Pontus Dashboard
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # a cada 6 horas (UTC: 00, 06, 12, 18)
+  workflow_dispatch:          # disparo manual
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install requests
+
+      - name: Fetch Meta data (NBP - Gui Pontus, filtro "inlead")
+        env:
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+        run: python scripts/fetch_pontus_dashboard.py
+
+      - name: Deploy to gh-pages
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Salvar arquivos gerados no main
+          cp docs/data.json  /tmp/data.json
+          cp docs/index.html /tmp/index.html
+
+          # Trocar para gh-pages (criar se não existir)
+          git fetch origin gh-pages || true
+          git checkout -f gh-pages 2>/dev/null || git checkout --orphan gh-pages
+
+          # Limpar working tree mantendo .git
+          git rm -rf . 2>/dev/null || true
+          rm -rf docs scripts .github 2>/dev/null || true
+
+          # Publicar arquivos na raiz da gh-pages
+          cp /tmp/data.json  data.json
+          cp /tmp/index.html index.html
+          touch .nojekyll
+
+          git add data.json index.html .nojekyll
+          if git diff --staged --quiet; then
+            echo "Sem alterações."
+          else
+            git commit -m "chore: dashboard $(date -u '+%Y-%m-%d %H:%M UTC') [skip ci]"
+            git push origin gh-pages
+            echo "Dashboard atualizado!"
+          fi

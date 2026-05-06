@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pontus Finance · Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ── Reset & vars ─────────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#070f24;            /* deep navy */
+  --bg2:#0a1734;
+  --sb:#0a1632;            /* sidebar */
+  --card:#0d1d40;          /* card */
+  --card2:#11254f;
+  --border:rgba(203,230,245,0.08);
+  --border2:rgba(203,230,245,0.18);
+  --pt:#cbe6f5;            /* Pontus brand light blue (button) */
+  --ptd:rgba(203,230,245,0.12);
+  --ptd2:rgba(203,230,245,0.22);
+  --gold:#d6b87a;          /* warm finance accent */
+  --gn:#4ade80;            /* AddToCart green */
+  --cy:#67e8f9;            /* Contact cyan */
+  --pu:#a78bfa;            /* CompleteReg purple */
+  --or:#fb923c;            /* Hook rate orange */
+  --rd:#f87171;
+  --txt:#ffffff;
+  --mu:rgba(255,255,255,.45);
+  --mu2:rgba(255,255,255,.28);
+  --sw:236px;
+  --serif:'Cormorant Garamond', Georgia, serif;
+}
+html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:radial-gradient(circle at 15% -10%, #16306c 0%, var(--bg) 55%) fixed;
+  color:var(--txt);font-size:13px;letter-spacing:.01em}
+em.italic{font-family:var(--serif);font-style:italic;font-weight:600;color:var(--pt)}
+
+/* ── Sidebar ──────────────────────────────────────────── */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;width:var(--sw);
+  background:linear-gradient(180deg,#0a1632 0%, #070f24 100%);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;z-index:100;
+}
+.sb-logo{padding:22px 18px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:11px;flex-shrink:0}
+.sb-mark{width:38px;height:38px;border-radius:8px;
+  background:linear-gradient(135deg,#cbe6f5 0%, #8eb6d9 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-style:italic;font-weight:600;
+  font-size:22px;color:#0a1734;line-height:1;flex-shrink:0;
+  box-shadow:0 0 22px rgba(203,230,245,.18)}
+.sb-brand{font-family:var(--serif);font-size:18px;font-weight:600;color:#fff;letter-spacing:.04em;line-height:1}
+.sb-brand .dot{color:var(--pt)}
+.sb-sub{font-size:9px;color:var(--mu);margin-top:3px;letter-spacing:.18em;text-transform:uppercase}
+
+.sb-sec{padding:16px 18px 6px;font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.14em;flex-shrink:0}
+.sb-pills{padding:0 12px;flex:1;overflow-y:auto;min-height:0}
+.day-btn{display:flex;align-items:center;gap:9px;width:100%;
+  padding:9px 11px;border-radius:8px;background:none;border:none;
+  color:var(--mu);font-size:12px;font-family:inherit;cursor:pointer;margin-bottom:2px;
+  transition:all .14s;text-align:left}
+.day-btn .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;opacity:.35}
+.day-btn:hover{background:var(--ptd);color:var(--txt)}
+.day-btn.on{background:var(--ptd);color:var(--pt);font-weight:600}
+.day-btn.on .dot{opacity:1}
+
+.sb-sum{padding:14px 18px 18px;border-top:1px solid var(--border);flex-shrink:0}
+.sb-sum-ttl{font-size:9px;text-transform:uppercase;color:var(--mu);letter-spacing:.14em;margin-bottom:11px}
+.sb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sb-lbl{font-size:11px;color:var(--mu)}
+.sb-val{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--pt)}
+.sb-row.gn .sb-val{color:var(--gn)}
+.sb-row.cy .sb-val{color:var(--cy)}
+.sb-row.pu .sb-val{color:var(--pu)}
+.sb-row.wh .sb-val{color:var(--txt)}
+
+/* ── Main ─────────────────────────────────────────────── */
+.main{margin-left:var(--sw);min-height:100vh;padding:24px 24px 0;display:flex;flex-direction:column;gap:16px}
+
+/* ── Header ───────────────────────────────────────────── */
+.hdr{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--border);padding-bottom:18px}
+.hdr h1{font-family:var(--serif);font-size:30px;font-weight:600;letter-spacing:.01em;line-height:1.1}
+.hdr h1 em{font-style:italic;color:var(--pt)}
+.hdr-sub{font-size:11px;color:var(--mu);margin-top:6px;letter-spacing:.06em}
+.hdr-range{font-size:12px;color:rgba(255,255,255,.65);margin-top:8px}
+.hdr-range strong{color:var(--pt);font-weight:600}
+.hdr-right{text-align:right;font-size:11px;color:var(--mu)}
+.hdr-tag{display:inline-flex;gap:6px;align-items:center;background:var(--ptd);color:var(--pt);
+  padding:5px 11px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.04em;
+  border:1px solid var(--border2);margin-bottom:6px}
+.hdr-tag .pulse{width:6px;height:6px;border-radius:50%;background:var(--gn);box-shadow:0 0 0 0 rgba(74,222,128,.6);
+  animation:pulse 1.8s ease infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.6)}70%{box-shadow:0 0 0 8px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+
+/* ── Card ─────────────────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px}
+.card-ttl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--mu);
+  padding:13px 16px 0;display:flex;justify-content:space-between;align-items:center}
+.bsm{font-size:9px;padding:3px 9px;border-radius:12px;font-weight:600;letter-spacing:.04em}
+.bsm-pt{background:var(--ptd);color:var(--pt)}
+.bsm-gn{background:rgba(74,222,128,.12);color:var(--gn)}
+.bsm-cy{background:rgba(103,232,249,.12);color:var(--cy)}
+.bsm-pu{background:rgba(167,139,250,.15);color:var(--pu)}
+.bsm-or{background:rgba(251,146,60,.13);color:var(--or)}
+.bsm-wh{background:rgba(255,255,255,.07);color:rgba(255,255,255,.55)}
+
+/* ── Row-1: Gauges + Chart ────────────────────────────── */
+.row1{display:grid;grid-template-columns:1fr 1fr 1fr 2.3fr;gap:14px;align-items:start}
+
+.gcrd,.kcrd,.xcrd,.fcrd,.vcrd{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.gcrd:hover,.kcrd:hover,.xcrd:hover,.fcrd:hover,.vcrd:hover{
+  transform:translateY(-3px);border-color:var(--border2);
+  box-shadow:0 12px 38px rgba(0,0,0,.55);z-index:2;position:relative}
+
+/* Gauge */
+.gcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:18px 12px 16px;display:flex;flex-direction:column;align-items:center;
+  height:230px;justify-content:center}
+.g-lbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:10px}
+.g-wrap{position:relative;width:108px;height:108px}
+.g-wrap svg{width:100%;height:100%;display:block}
+.g-trk{fill:none;stroke:rgba(255,255,255,.06);stroke-width:9}
+.g-arc{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.g-ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.g-num{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.g-unit{font-size:9px;color:var(--mu);margin-top:1px;letter-spacing:.05em}
+.g-foot{font-size:10px;color:var(--mu);margin-top:6px;text-align:center}
+
+/* Chart */
+.ccrd{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;height:230px;display:flex;flex-direction:column}
+.ccrd canvas{display:block;width:100%!important;flex:1;min-height:0}
+
+/* ── Row-2: KPI strip ─────────────────────────────────── */
+.row2{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px 16px 14px;position:relative;overflow:hidden}
+.kcrd::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--pt)}
+.kcrd.gn::before{background:var(--gn)}
+.kcrd.cy::before{background:var(--cy)}
+.kcrd.pu::before{background:var(--pu)}
+.kcrd.or::before{background:var(--or)}
+.kcrd.mu::before{background:rgba(255,255,255,.18)}
+.k-lbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.09em;margin-bottom:7px}
+.k-val{font-size:25px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--pt);line-height:1}
+.kcrd.gn .k-val{color:var(--gn)}
+.kcrd.cy .k-val{color:var(--cy)}
+.kcrd.pu .k-val{color:var(--pu)}
+.kcrd.or .k-val{color:var(--or)}
+.kcrd.mu .k-val{color:var(--txt)}
+.k-sub{font-size:11px;color:var(--mu);margin-top:6px}
+
+/* ── Row-3: 5-step Funnel ─────────────────────────────── */
+.funnel-wrap{margin-top:4px}
+.funnel-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
+.funnel-ttl{font-family:var(--serif);font-size:18px;font-weight:600;color:#fff}
+.funnel-ttl em{font-style:italic;color:var(--pt)}
+.row3{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:stretch}
+.fcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 14px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.fcrd::before{content:'';position:absolute;left:0;top:0;right:0;height:3px;background:var(--pt);opacity:.7}
+.fcrd.s1::before{background:var(--pt)}
+.fcrd.s2::before{background:var(--gn)}
+.fcrd.s3::before{background:var(--cy)}
+.fcrd.s4::before{background:var(--pu)}
+.fcrd.s5::before{background:linear-gradient(90deg,var(--gold),#f0d093)}
+.f-step{font-size:9px;color:var(--mu);letter-spacing:.16em;text-transform:uppercase;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center}
+.f-num-step{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-weight:700;font-size:10px;color:#0a1632;background:var(--pt)}
+.fcrd.s2 .f-num-step{background:var(--gn);color:#0a1632}
+.fcrd.s3 .f-num-step{background:var(--cy);color:#0a1632}
+.fcrd.s4 .f-num-step{background:var(--pu);color:#0a1632}
+.fcrd.s5 .f-num-step{background:var(--gold);color:#0a1632}
+.f-lbl{font-family:var(--serif);font-size:14px;font-weight:600;color:#fff;line-height:1.15;margin-bottom:8px}
+.f-num{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;color:var(--pt)}
+.fcrd.s2 .f-num{color:var(--gn)}
+.fcrd.s3 .f-num{color:var(--cy)}
+.fcrd.s4 .f-num{color:var(--pu)}
+.fcrd.s5 .f-num{color:var(--gold)}
+.f-cost{font-size:11px;color:var(--mu);margin-top:8px}
+.f-cost span{color:#fff;font-weight:600;font-variant-numeric:tabular-nums}
+.f-pbr{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-top:11px}
+.f-pbf{height:100%;border-radius:3px;transition:width .8s ease;background:var(--pt)}
+.fcrd.s2 .f-pbf{background:var(--gn)}
+.fcrd.s3 .f-pbf{background:var(--cy)}
+.fcrd.s4 .f-pbf{background:var(--pu)}
+.fcrd.s5 .f-pbf{background:linear-gradient(90deg,var(--gold),#f0d093)}
+.f-rate{font-size:10px;color:var(--mu);margin-top:5px}
+.f-rate strong{color:#fff;font-weight:600}
+.fcrd-arrow{position:absolute;right:-7px;top:50%;width:14px;height:14px;background:var(--bg);
+  border-top:1px solid var(--border);border-right:1px solid var(--border);transform:translate(0,-50%) rotate(45deg);z-index:3;pointer-events:none}
+
+/* ── Video retention (compact strip) ───────────────────── */
+.vcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:4px}
+.vr-ttl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.1em;margin-bottom:11px;display:flex;justify-content:space-between;align-items:center}
+.vr-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.vr-lbl{font-size:11px;color:var(--mu);width:34px;flex-shrink:0}
+.vr-bar{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.vr-fill{height:100%;border-radius:4px;transition:width .65s ease}
+.vr-val{font-size:11px;font-variant-numeric:tabular-nums;width:48px;text-align:right;flex-shrink:0;color:#fff}
+
+/* ── Campaign table ───────────────────────────────────── */
+.tbl-crd{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.tbl-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border)}
+.tbl-ttl{font-family:var(--serif);font-size:16px;font-weight:600}
+.tbl-ttl em{font-style:italic;color:var(--pt)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+th{padding:10px 14px;text-align:right;font-size:9px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--mu);background:rgba(203,230,245,.025);cursor:pointer;
+  border-bottom:1px solid var(--border);user-select:none}
+th:first-child{text-align:left}
+th:hover{color:var(--txt)}
+th.sort-asc::after{content:' ↑';color:var(--pt)}
+th.sort-desc::after{content:' ↓';color:var(--pt)}
+td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(203,230,245,.03)}
+.tr{text-align:right}
+.mono{font-variant-numeric:tabular-nums}
+.pt{color:var(--pt);font-weight:600}
+.dim{color:var(--mu)}
+.trunc{max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbdg{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 9px;border-radius:12px;font-weight:600;letter-spacing:.03em}
+.s-act{background:rgba(74,222,128,.13);color:var(--gn)}
+.s-pau{background:rgba(255,255,255,.06);color:var(--mu)}
+
+/* ── Creative grid ────────────────────────────────────── */
+.cr-wrap{margin-bottom:6px}
+.cr-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:13px}
+.cr-ttl{font-family:var(--serif);font-size:16px;font-weight:600}
+.cr-ttl em{font-style:italic;color:var(--pt)}
+.cr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:14px}
+.crcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;transition:transform .14s,border-color .14s}
+.crcrd:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 8px 28px rgba(0,0,0,.5)}
+.crcrd.is-off{opacity:.55}
+.cr-thumb-wrap{position:relative;display:block;overflow:hidden}
+.cr-sbadge{position:absolute;top:8px;left:8px;z-index:3;font-size:9px;font-weight:800;letter-spacing:.06em;
+  padding:3px 9px;border-radius:20px;pointer-events:none}
+.cr-sbadge.on{background:rgba(74,222,128,.92);color:#0a1632;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.cr-sbadge.off{background:rgba(180,30,30,.9);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.cr-thumb-wrap:hover .cr-play{opacity:1}
+.cr-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.45);opacity:0;transition:opacity .16s;font-size:36px;color:#fff;text-decoration:none}
+.cr-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.cr-ph{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:#0a1632;font-size:26px}
+.cr-preview-btn{display:flex;align-items:center;justify-content:center;gap:5px;
+  margin-top:10px;padding:7px 0;border-radius:8px;
+  background:var(--ptd);border:1px solid var(--border2);
+  color:var(--pt);font-size:11px;font-weight:600;text-decoration:none;
+  transition:background .15s,border-color .15s}
+.cr-preview-btn:hover{background:var(--ptd2);border-color:var(--pt)}
+.cr-body{padding:11px 12px 12px}
+.cr-nm{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.cr-cp{font-size:10px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:9px}
+.cr-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.cs{background:rgba(203,230,245,.04);border-radius:7px;padding:6px 8px}
+.cs-l{font-size:9px;text-transform:uppercase;color:var(--mu);letter-spacing:.06em;margin-bottom:2px}
+.cs-v{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.cs-v.pt{color:var(--pt)}
+.cs-v.wh{color:var(--txt)}
+.cs-v.gn{color:var(--gn)}
+.cs-v.cy{color:var(--cy)}
+.cs-v.pu{color:var(--pu)}
+.cs-v.gold{color:var(--gold)}
+
+/* ── Creative Report ──────────────────────────────────── */
+.rep-wrap{margin-top:6px;margin-bottom:6px}
+.rep-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.rcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px 16px;display:flex;flex-direction:column}
+.rcnv{position:relative;flex:1;min-height:280px}
+.rcnv canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+@media(max-width:900px){.rep-grid{grid-template-columns:1fr}}
+
+/* ── Scale Plan ───────────────────────────────────────── */
+.scale-wrap{margin-top:6px}
+.scale-chart-crd{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.scale-chart-crd .rcnv{min-height:260px;position:relative}
+.scale-chart-crd .rcnv canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+.scale-tbl-crd{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.scale-tbl{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+.scale-tbl th{padding:10px 14px;text-align:right;font-size:9px;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--mu);background:rgba(203,230,245,.025);
+  border-bottom:1px solid var(--border)}
+.scale-tbl th:first-child{text-align:left}
+.scale-tbl td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);
+  text-align:right;font-variant-numeric:tabular-nums}
+.scale-tbl td:first-child{text-align:left;font-weight:600}
+.scale-tbl tr:last-child td{border-bottom:none}
+.scale-tbl tr.sc-cur td{background:rgba(203,230,245,.06)}
+.scale-tbl tr.sc-cur td:first-child{color:var(--pt)}
+.action-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:8px}
+.actn{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px 16px;display:flex;gap:12px;align-items:flex-start;
+  transition:border-color .15s}
+.actn:hover{border-color:var(--border2)}
+.actn-ico{font-size:22px;flex-shrink:0;line-height:1;margin-top:1px}
+.actn-ttl{font-size:12px;font-weight:700;margin-bottom:5px;line-height:1.3}
+.actn-desc{font-size:11px;color:var(--mu);line-height:1.6}
+.actn-desc strong{color:rgba(255,255,255,.78)}
+.actn-prio{display:inline-block;margin-top:8px;font-size:9px;font-weight:700;
+  padding:3px 9px;border-radius:11px;letter-spacing:.05em}
+.prio-hi{background:rgba(248,113,113,.16);color:var(--rd)}
+.prio-md{background:rgba(214,184,122,.16);color:var(--gold)}
+.prio-lo{background:rgba(255,255,255,.07);color:var(--mu)}
+
+/* ── Footer ───────────────────────────────────────────── */
+.footer{font-size:11px;color:var(--mu);text-align:center;padding:14px 0 22px}
+.footer strong{color:rgba(255,255,255,.55)}
+
+/* ── Scrollbar ────────────────────────────────────────── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(203,230,245,.14);border-radius:3px}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media(max-width:1320px){
+  .row1{grid-template-columns:1fr 1fr 1fr}
+  .chart-col{grid-column:1/-1;order:-1;height:260px}
+  .row3{grid-template-columns:repeat(5,1fr)}
+}
+@media(max-width:1100px){.row3{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){
+  .row1{grid-template-columns:1fr 1fr}
+  .row2{grid-template-columns:repeat(2,1fr)}
+  .row3{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+  :root{--sw:0px}
+  .sidebar{display:none}
+  .row2{grid-template-columns:1fr 1fr}
+  .row3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────── -->
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mark">P</div>
+    <div>
+      <div class="sb-brand">PONTUS<span class="dot">.</span></div>
+      <div class="sb-sub">Finance · Ads</div>
+    </div>
+  </div>
+
+  <div class="sb-sec">Dias com gasto</div>
+  <div class="sb-pills" id="day-pills"></div>
+
+  <div class="sb-sum">
+    <div class="sb-sum-ttl">Resumo do período</div>
+    <div class="sb-row"><span class="sb-lbl">💰 Gasto</span><span class="sb-val" id="ss-spend">—</span></div>
+    <div class="sb-row wh"><span class="sb-lbl">👁️ PageView</span><span class="sb-val" id="ss-pv">—</span></div>
+    <div class="sb-row gn"><span class="sb-lbl">🛒 AddToCart</span><span class="sb-val" id="ss-atc">—</span></div>
+    <div class="sb-row cy"><span class="sb-lbl">✉️ Contact</span><span class="sb-val" id="ss-contact">—</span></div>
+    <div class="sb-row pu"><span class="sb-lbl">📲 CompleteReg</span><span class="sb-val" id="ss-creg">—</span></div>
+    <div class="sb-row"><span class="sb-lbl">🎯 Lead</span><span class="sb-val" id="ss-leads" style="color:#d6b87a">—</span></div>
+    <div class="sb-row wh"><span class="sb-lbl">📊 CPL</span><span class="sb-val" id="ss-cpl">—</span></div>
+  </div>
+</nav>
+
+<!-- ── MAIN ────────────────────────────────────────────── -->
+<main class="main">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div>
+      <div class="hdr-tag"><span class="pulse"></span><span id="hdr-status">CAMPANHA ATIVA</span></div>
+      <h1><em>Pontus Finance</em> · Dashboard de Captação</h1>
+      <div class="hdr-sub" id="hdr-acct">—</div>
+      <div class="hdr-range" id="hdr-range">—</div>
+    </div>
+    <div class="hdr-right">
+      <div id="hdr-updated">—</div>
+      <div style="margin-top:4px;color:rgba(203,230,245,.45);font-size:10px" id="hdr-filter">—</div>
+    </div>
+  </div>
+
+  <!-- Row 1 — Gauges + Chart -->
+  <div class="row1">
+    <div class="gcrd">
+      <div class="g-lbl">Connect Rate</div>
+      <div class="g-wrap">
+        <svg viewBox="0 0 108 108">
+          <circle class="g-trk" cx="54" cy="54" r="45" transform="rotate(-90 54 54)"/>
+          <circle id="g-ctr" class="g-arc" cx="54" cy="54" r="45"
+            stroke="#cbe6f5" stroke-dasharray="282.74" stroke-dashoffset="282.74"
+            transform="rotate(-90 54 54)"/>
+        </svg>
+        <div class="g-ctr">
+          <span class="g-num" id="gn-ctr" style="color:#cbe6f5">—</span>
+          <span class="g-unit">PageView/Clique</span>
+        </div>
+      </div>
+      <div class="g-foot" id="gf-ctr">—</div>
+    </div>
+
+    <div class="gcrd">
+      <div class="g-lbl">Conversão Funil</div>
+      <div class="g-wrap">
+        <svg viewBox="0 0 108 108">
+          <circle class="g-trk" cx="54" cy="54" r="45" transform="rotate(-90 54 54)"/>
+          <circle id="g-lp" class="g-arc" cx="54" cy="54" r="45"
+            stroke="#d6b87a" stroke-dasharray="282.74" stroke-dashoffset="282.74"
+            transform="rotate(-90 54 54)"/>
+        </svg>
+        <div class="g-ctr">
+          <span class="g-num" id="gn-lp" style="color:#d6b87a">—</span>
+          <span class="g-unit">Lead/PageView</span>
+        </div>
+      </div>
+      <div class="g-foot" id="gf-lp">—</div>
+    </div>
+
+    <div class="gcrd">
+      <div class="g-lbl">Hook Rate</div>
+      <div class="g-wrap">
+        <svg viewBox="0 0 108 108">
+          <circle class="g-trk" cx="54" cy="54" r="45" transform="rotate(-90 54 54)"/>
+          <circle id="g-hook" class="g-arc" cx="54" cy="54" r="45"
+            stroke="#fb923c" stroke-dasharray="282.74" stroke-dashoffset="282.74"
+            transform="rotate(-90 54 54)"/>
+        </svg>
+        <div class="g-ctr">
+          <span class="g-num" id="gn-hook" style="color:#fb923c">—</span>
+          <span class="g-unit">VP25/Impr</span>
+        </div>
+      </div>
+      <div class="g-foot" id="gf-hook">—</div>
+    </div>
+
+    <div class="ccrd chart-col">
+      <div class="card-ttl">
+        <span>Gasto &amp; Funil diários</span>
+        <span class="bsm bsm-pt" id="chart-badge">—</span>
+      </div>
+      <canvas id="chart" style="margin-top:10px"></canvas>
+    </div>
+  </div>
+
+  <!-- Row 2 — KPI strip -->
+  <div class="row2">
+    <div class="kcrd">
+      <div class="k-lbl">💰 Gasto Total</div>
+      <div class="k-val" id="k-spend">—</div>
+      <div class="k-sub" id="k-spend-sub">—</div>
+    </div>
+    <div class="kcrd mu">
+      <div class="k-lbl">🎯 Leads (final)</div>
+      <div class="k-val" id="k-leads">—</div>
+      <div class="k-sub" id="k-leads-sub">Lead Pixel · página final</div>
+    </div>
+    <div class="kcrd mu">
+      <div class="k-lbl">📊 CPL</div>
+      <div class="k-val" id="k-cpl">—</div>
+      <div class="k-sub">Custo por Lead final</div>
+    </div>
+    <div class="kcrd mu">
+      <div class="k-lbl">📢 CPM</div>
+      <div class="k-val" id="k-cpm">—</div>
+      <div class="k-sub">Custo por mil impr.</div>
+    </div>
+  </div>
+
+  <!-- Row 3 — 5-step Funnel -->
+  <div class="funnel-wrap">
+    <div class="funnel-hdr">
+      <span class="funnel-ttl"><em>Funil</em> de Conversão · Pixel</span>
+      <span class="bsm bsm-pt" id="funnel-badge">5 etapas</span>
+    </div>
+    <div class="row3">
+
+      <div class="fcrd s1">
+        <div class="f-step"><span>01 · PageView</span><span class="f-num-step">1</span></div>
+        <div class="f-lbl">Carregamento da LP</div>
+        <div class="f-num" id="f-pv">—</div>
+        <div class="f-cost">Custo: <span id="f-pv-cost">—</span></div>
+        <div class="f-pbr"><div class="f-pbf" id="f-pv-bar" style="width:100%"></div></div>
+        <div class="f-rate"><strong id="f-pv-rate">—</strong> dos cliques no link</div>
+      </div>
+
+      <div class="fcrd s2">
+        <div class="f-step"><span>02 · AddToCart</span><span class="f-num-step">2</span></div>
+        <div class="f-lbl">Clicou no botão da LP</div>
+        <div class="f-num" id="f-atc">—</div>
+        <div class="f-cost">Custo: <span id="f-atc-cost">—</span></div>
+        <div class="f-pbr"><div class="f-pbf" id="f-atc-bar" style="width:0%"></div></div>
+        <div class="f-rate"><strong id="f-atc-rate">—</strong> dos PageViews</div>
+      </div>
+
+      <div class="fcrd s3">
+        <div class="f-step"><span>03 · Contact</span><span class="f-num-step">3</span></div>
+        <div class="f-lbl">Etapa do e-mail</div>
+        <div class="f-num" id="f-contact">—</div>
+        <div class="f-cost">Custo: <span id="f-contact-cost">—</span></div>
+        <div class="f-pbr"><div class="f-pbf" id="f-contact-bar" style="width:0%"></div></div>
+        <div class="f-rate"><strong id="f-contact-rate">—</strong> dos AddToCart</div>
+      </div>
+
+      <div class="fcrd s4">
+        <div class="f-step"><span>04 · CompleteReg</span><span class="f-num-step">4</span></div>
+        <div class="f-lbl">Etapa do WhatsApp</div>
+        <div class="f-num" id="f-creg">—</div>
+        <div class="f-cost">Custo: <span id="f-creg-cost">—</span></div>
+        <div class="f-pbr"><div class="f-pbf" id="f-creg-bar" style="width:0%"></div></div>
+        <div class="f-rate"><strong id="f-creg-rate">—</strong> dos Contact</div>
+      </div>
+
+      <div class="fcrd s5">
+        <div class="f-step"><span>05 · Lead</span><span class="f-num-step">5</span></div>
+        <div class="f-lbl">Página de obrigado</div>
+        <div class="f-num" id="f-lead">—</div>
+        <div class="f-cost">Custo: <span id="f-lead-cost">—</span></div>
+        <div class="f-pbr"><div class="f-pbf" id="f-lead-bar" style="width:0%"></div></div>
+        <div class="f-rate"><strong id="f-lead-rate">—</strong> dos CompleteReg</div>
+      </div>
+
+    </div>
+
+    <!-- Video retention compact strip -->
+    <div class="vcrd">
+      <div class="vr-ttl">
+        <span>🎬 Retenção de Vídeo · Pontus Lead</span>
+        <span class="bsm bsm-or" id="vr-badge">—</span>
+      </div>
+      <div class="vr-row">
+        <span class="vr-lbl">25%</span>
+        <div class="vr-bar"><div class="vr-fill" id="vr25" style="width:0%;background:rgba(214,184,122,.95)"></div></div>
+        <span class="vr-val" id="vv25">—</span>
+      </div>
+      <div class="vr-row">
+        <span class="vr-lbl">50%</span>
+        <div class="vr-bar"><div class="vr-fill" id="vr50" style="width:0%;background:rgba(214,184,122,.7)"></div></div>
+        <span class="vr-val" id="vv50">—</span>
+      </div>
+      <div class="vr-row">
+        <span class="vr-lbl">75%</span>
+        <div class="vr-bar"><div class="vr-fill" id="vr75" style="width:0%;background:rgba(214,184,122,.45)"></div></div>
+        <span class="vr-val" id="vv75">—</span>
+      </div>
+      <div class="vr-row">
+        <span class="vr-lbl">100%</span>
+        <div class="vr-bar"><div class="vr-fill" id="vr100" style="width:0%;background:rgba(214,184,122,.25)"></div></div>
+        <span class="vr-val" id="vv100">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Campaign table -->
+  <div class="tbl-crd">
+    <div class="tbl-hdr">
+      <span class="tbl-ttl"><em>Campanhas</em> · filtro: <span id="tbl-filter" style="color:#cbe6f5">inlead</span></span>
+      <span class="bsm bsm-pt" id="camps-badge">—</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="srt('name')">Campanha</th>
+            <th class="tr" onclick="srt('spend')">Gasto</th>
+            <th class="tr" onclick="srt('page_view')">👁️ PageView</th>
+            <th class="tr" onclick="srt('add_to_cart')" style="color:#4ade80">🛒 ATC</th>
+            <th class="tr" onclick="srt('contact')" style="color:#67e8f9">✉️ Contact</th>
+            <th class="tr" onclick="srt('complete_reg')" style="color:#a78bfa">📲 CReg</th>
+            <th class="tr" onclick="srt('leads')" style="color:#d6b87a">🎯 Lead</th>
+            <th class="tr" onclick="srt('cpl')">CPL</th>
+            <th class="tr" onclick="srt('connect_rate')">Connect%</th>
+            <th class="tr" onclick="srt('lp_conv')">Lead/PV%</th>
+            <th class="tr" onclick="srt('cpm')">CPM</th>
+            <th class="tr" onclick="srt('impressions')">Impr.</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="camps-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Creatives -->
+  <div class="cr-wrap">
+    <div class="cr-hdr">
+      <span class="cr-ttl"><em>Criativos</em></span>
+      <span class="bsm bsm-pt" id="ads-badge">—</span>
+    </div>
+    <div class="cr-grid" id="cr-grid"></div>
+  </div>
+
+  <!-- Report de Criativos -->
+  <div class="rep-wrap">
+    <div class="cr-hdr">
+      <span class="cr-ttl">📊 <em>Performance</em> · Criativos</span>
+      <span class="bsm bsm-pt" id="rep-badge">—</span>
+    </div>
+    <div class="rep-grid">
+      <div class="rcrd">
+        <div class="card-ttl" style="margin-bottom:10px">
+          <span>💰 Gasto por Criativo</span><span class="bsm bsm-pt">Top 10</span>
+        </div>
+        <div class="rcnv"><canvas id="rep-spend"></canvas></div>
+      </div>
+      <div class="rcrd">
+        <div class="card-ttl" style="margin-bottom:10px">
+          <span>🎯 Leads por Criativo</span><span class="bsm bsm-pt">Top 10</span>
+        </div>
+        <div class="rcnv"><canvas id="rep-leads"></canvas></div>
+      </div>
+      <div class="rcrd">
+        <div class="card-ttl" style="margin-bottom:10px">
+          <span>📊 CPL por Criativo</span><span class="bsm bsm-wh">menor = melhor · Top 10</span>
+        </div>
+        <div class="rcnv"><canvas id="rep-cpl"></canvas></div>
+      </div>
+      <div class="rcrd">
+        <div class="card-ttl" style="margin-bottom:10px">
+          <span>🛒 AddToCart por Criativo</span><span class="bsm bsm-gn">Top 10</span>
+        </div>
+        <div class="rcnv"><canvas id="rep-atc"></canvas></div>
+      </div>
+      <div class="rcrd">
+        <div class="card-ttl" style="margin-bottom:10px">
+          <span>🔗 Connect Rate</span><span class="bsm bsm-wh">PV / Cliques · Top 10</span>
+        </div>
+        <div class="rcnv"><canvas id="rep-cr"></canvas></div>
+      </div>
+      <div class="rcrd">
+        <div class="card-ttl" style="margin-bottom:10px">
+          <span>🫧 Gasto × CPL</span><span class="bsm bsm-wh">bolha = leads</span>
+        </div>
+        <div class="rcnv"><canvas id="rep-bubble"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Scale Plan ──────────────────────────────────── -->
+  <div class="scale-wrap">
+    <div class="cr-hdr">
+      <span class="cr-ttl">📈 <em>Plano de Escala</em> · Orçamento × CPL × Leads</span>
+      <span class="bsm bsm-pt">baseado nos dados atuais</span>
+    </div>
+
+    <div class="scale-chart-crd">
+      <div class="card-ttl" style="margin-bottom:12px">
+        <span>Projeção de Investimento × CPL</span>
+        <span class="bsm bsm-wh">3 cenários de crescimento</span>
+      </div>
+      <div class="rcnv"><canvas id="scale-chart"></canvas></div>
+    </div>
+
+    <div class="scale-tbl-crd">
+      <div class="tbl-hdr">
+        <span class="tbl-ttl">Cenários de Escala</span>
+        <span class="bsm bsm-wh" style="font-size:9px">
+          🟢 Otimista &nbsp;·&nbsp; 🟡 Realista &nbsp;·&nbsp; 🔴 Conservador
+        </span>
+      </div>
+      <div class="tbl-wrap">
+        <table class="scale-tbl" id="scale-tbl"></table>
+      </div>
+    </div>
+
+    <div class="cr-hdr" style="margin-top:6px;margin-bottom:10px">
+      <span class="cr-ttl">⚡ <em>Plano de Ação</em> para Escalar sem Subir o CPL</span>
+    </div>
+    <div class="action-grid" id="action-grid"></div>
+  </div>
+
+  <div class="footer" id="footer">—</div>
+
+</main>
+
+<script>
+let D = null, selD = 'all', ch = null, srtK = 'spend', srtDir = -1;
+const CIRC = 282.74;
+
+/* ── Init ─────────────────────────────────────────────── */
+async function init() {
+  try {
+    const r = await fetch('data.json?t=' + Date.now());
+    D = await r.json();
+    render();
+  } catch(e) {
+    document.querySelector('.main').innerHTML =
+      '<div style="padding:60px;text-align:center;color:rgba(255,255,255,.35)">'
+      + 'Erro ao carregar dados.<br>Verifique se <code>data.json</code> está na mesma pasta deste HTML.</div>';
+    console.error(e);
+  }
+}
+
+/* ── Formatters ───────────────────────────────────────── */
+function fmtC(v){ return 'R$ ' + Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtN(v){ return Number(v||0).toLocaleString('pt-BR'); }
+function fmtP(v){ return Number(v||0).toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1}) + '%'; }
+function fd(s){ if(!s) return '—'; const d=new Date(s+'T12:00:00Z'); return d.getUTCDate().toString().padStart(2,'0')+'/'+(d.getUTCMonth()+1).toString().padStart(2,'0')+'/'+d.getUTCFullYear(); }
+function fdt(iso){ try { return new Date(iso).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}); } catch(e) { return iso || '—'; } }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ── Data helpers ─────────────────────────────────────── */
+function getMet(date) {
+  if (!date || date === 'all') return D.summary;
+  return D.daily.find(d => d.date === date) || D.summary;
+}
+function getCMet(c, date) {
+  if (!date || date === 'all') return {...c};
+  const d = (c.daily||[]).find(x => x.date === date);
+  return d ? {...c, ...d}
+    : {...c, spend:0, page_view:0, add_to_cart:0, contact:0, complete_reg:0, leads:0,
+       cpl:0, cpm:0, connect_rate:0, lp_conv:0, impressions:0};
+}
+
+/* ── Gauge helper ─────────────────────────────────────── */
+function setGauge(id, value, max) {
+  const pct = Math.min((value / (max || 100)) * 100, 100);
+  const el  = document.getElementById('g-' + id);
+  if (el) el.style.strokeDashoffset = CIRC * (1 - pct / 100);
+}
+
+/* ── Render ───────────────────────────────────────────── */
+function render() {
+  const dr = D.date_range;
+  document.getElementById('hdr-acct').textContent    = D.account.name + ' · ' + D.account.id;
+  document.getElementById('hdr-range').innerHTML     = '<strong>' + fd(dr.since) + '</strong> → <strong>' + fd(dr.until) + '</strong>';
+  document.getElementById('hdr-updated').textContent = 'Atualizado ' + fdt(D.last_updated);
+  document.getElementById('hdr-filter').textContent  = 'Filtro: campanha contém "' + (D.camp_filter || 'inlead') + '"';
+  document.getElementById('tbl-filter').textContent  = (D.camp_filter || 'inlead');
+  document.title = D.account.name + ' · Pontus Dashboard';
+
+  // Sidebar lifetime summary
+  const s = D.summary;
+  document.getElementById('ss-spend').textContent   = fmtC(s.spend);
+  document.getElementById('ss-pv').textContent      = fmtN(s.page_view);
+  document.getElementById('ss-atc').textContent     = fmtN(s.add_to_cart);
+  document.getElementById('ss-contact').textContent = fmtN(s.contact);
+  document.getElementById('ss-creg').textContent    = fmtN(s.complete_reg);
+  document.getElementById('ss-leads').textContent   = fmtN(s.leads);
+  document.getElementById('ss-cpl').textContent     = s.cpl > 0 ? fmtC(s.cpl) : '—';
+
+  // Header status pill
+  const anyActive = (D.campaigns || []).some(c => c.status === 'ACTIVE');
+  document.getElementById('hdr-status').textContent = anyActive ? 'CAMPANHA ATIVA' : 'CAMPANHA PAUSADA';
+
+  renderPills();
+  updateKPIs(getMet(selD));
+  renderChart();
+  renderCamps(D.campaigns);
+  renderAds(D.ads);
+  renderReport(D.ads);
+  renderScalePlan();
+
+  document.getElementById('footer').innerHTML =
+    `Conta: <strong>${D.account.name}</strong> (${D.account.id}) &nbsp;·&nbsp;
+     Atualizado: <strong>${fdt(D.last_updated)}</strong> &nbsp;·&nbsp;
+     Connect Rate = PageViews / Cliques no Link &nbsp;·&nbsp;
+     CPL = Gasto / Lead Pixel (página final)`;
+}
+
+/* ── Day pills ────────────────────────────────────────── */
+function renderPills() {
+  const days = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const c = document.getElementById('day-pills');
+  c.innerHTML = '';
+
+  const all = document.createElement('button');
+  all.className = 'day-btn' + (selD === 'all' ? ' on' : '');
+  all.innerHTML = '<span class="dot"></span>Todos os dias';
+  all.onclick = () => selDay('all', all);
+  c.appendChild(all);
+
+  (D.daily || []).filter(d => d.spend > 0).forEach(d => {
+    const dt  = new Date(d.date + 'T12:00:00Z');
+    const lbl = days[dt.getUTCDay()] + ' ' +
+                dt.getUTCDate().toString().padStart(2,'0') + '/' +
+                (dt.getUTCMonth()+1).toString().padStart(2,'0');
+    const btn = document.createElement('button');
+    btn.className = 'day-btn' + (selD === d.date ? ' on' : '');
+    btn.dataset.d = d.date;
+    btn.innerHTML = `<span class="dot"></span>${lbl}`;
+    btn.onclick = () => selDay(d.date, btn);
+    c.appendChild(btn);
+  });
+}
+
+function selDay(date, btn) {
+  selD = date;
+  document.querySelectorAll('.day-btn').forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  if (!D) return;
+  updateKPIs(getMet(date));
+  renderCamps(D.campaigns);
+  if (ch) highlightDay(date);
+}
+
+/* ── KPI + Gauges + Funnel ────────────────────────────── */
+function updateKPIs(m) {
+  // KPI strip
+  document.getElementById('k-spend').textContent     = fmtC(m.spend);
+  document.getElementById('k-leads').textContent     = fmtN(m.leads);
+  document.getElementById('k-cpl').textContent       = m.cpl > 0 ? fmtC(m.cpl) : '—';
+  document.getElementById('k-cpm').textContent       = fmtC(m.cpm);
+  document.getElementById('k-spend-sub').textContent = fmtN(m.impressions) + ' impressões · ' + fmtN(m.link_clicks || 0) + ' cliques link';
+
+  // Gauges
+  const cr   = m.connect_rate || 0;
+  const lp   = m.lp_conv      || 0;
+  const hook = m.hook_rate    || 0;
+  setGauge('ctr',  cr,   100);
+  setGauge('lp',   lp,   30);
+  setGauge('hook', hook, 50);
+  document.getElementById('gn-ctr').textContent  = fmtP(cr);
+  document.getElementById('gn-lp').textContent   = fmtP(lp);
+  document.getElementById('gn-hook').textContent = fmtP(hook);
+  document.getElementById('gf-ctr').textContent  = fmtN(m.link_clicks || 0) + ' cliques · ' + fmtN(m.page_view || 0) + ' PV';
+  document.getElementById('gf-lp').textContent   = fmtN(m.leads || 0) + ' leads · ' + fmtN(m.page_view || 0) + ' PV';
+  document.getElementById('gf-hook').textContent = fmtN(m.impressions || 0) + ' impr.';
+
+  document.getElementById('chart-badge').textContent = D.date_range.since + ' → ' + D.date_range.until;
+
+  // Funnel — 5 cards
+  const pv      = m.page_view    || 0;
+  const atc     = m.add_to_cart  || 0;
+  const contact = m.contact      || 0;
+  const creg    = m.complete_reg || 0;
+  const leads   = m.leads        || 0;
+  const lc      = m.link_clicks  || 0;
+
+  const setF = (key, count, cost, prevCount, rateVal) => {
+    document.getElementById('f-' + key).textContent       = fmtN(count);
+    document.getElementById('f-' + key + '-cost').textContent = (cost || 0) > 0 ? fmtC(cost) : '—';
+    const w = prevCount > 0 ? Math.min(count / prevCount * 100, 100) : 0;
+    document.getElementById('f-' + key + '-bar').style.width = w.toFixed(1) + '%';
+    document.getElementById('f-' + key + '-rate').textContent = fmtP(rateVal || 0);
+  };
+
+  setF('pv',      pv,      m.cp_page_view,    lc,      m.connect_rate);
+  setF('atc',     atc,     m.cp_add_to_cart,  pv,      m.atc_rate);
+  setF('contact', contact, m.cp_contact,      atc,     m.contact_rate);
+  setF('creg',    creg,    m.cp_complete_reg, contact, m.creg_rate);
+  setF('lead',    leads,   m.cp_lead,         creg,    m.lead_rate);
+
+  // Video retention
+  document.getElementById('vr-badge').textContent = 'Hook ' + fmtP(m.hook_rate || 0);
+  [25, 50, 75, 100].forEach(p => {
+    const v = m['vp' + p] || 0;
+    document.getElementById('vr'  + p).style.width = Math.min(v, 100) + '%';
+    document.getElementById('vv'  + p).textContent = fmtP(v);
+  });
+}
+
+/* ── Chart ────────────────────────────────────────────── */
+function renderChart() {
+  if (ch) { ch.destroy(); ch = null; }
+  const labels = D.daily.map(d => {
+    const dt = new Date(d.date + 'T12:00:00Z');
+    return dt.getUTCDate().toString().padStart(2,'0') + '/' +
+           (dt.getUTCMonth()+1).toString().padStart(2,'0');
+  });
+  const spends = D.daily.map(d => d.spend || 0);
+  const pvs    = D.daily.map(d => d.page_view || 0);
+  const atcs   = D.daily.map(d => d.add_to_cart || 0);
+  const leads  = D.daily.map(d => d.leads || 0);
+
+  const ctx = document.getElementById('chart').getContext('2d');
+  ch = new Chart(ctx, {
+    data: {
+      labels,
+      datasets: [
+        {
+          type:'bar', label:'Gasto (R$)', data: spends,
+          backgroundColor: 'rgba(203,230,245,.55)',
+          yAxisID:'y', borderRadius:3, order:4
+        },
+        {
+          type:'line', label:'PageView', data: pvs,
+          borderColor:'#cbe6f5', backgroundColor:'transparent',
+          pointBackgroundColor:'#cbe6f5', pointRadius:3, tension:.3, fill:false,
+          yAxisID:'y2', order:3, borderDash:[4,3]
+        },
+        {
+          type:'line', label:'AddToCart', data: atcs,
+          borderColor:'#4ade80', backgroundColor:'transparent',
+          pointBackgroundColor:'#4ade80', pointRadius:3, tension:.3, fill:false,
+          yAxisID:'y2', order:2
+        },
+        {
+          type:'line', label:'Lead', data: leads,
+          borderColor:'#d6b87a', backgroundColor:'transparent',
+          pointBackgroundColor:'#d6b87a', pointRadius:4, pointHoverRadius:6,
+          tension:.3, fill:false, yAxisID:'y2', order:1, borderWidth:2.4
+        },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ display:true, labels:{ color:'rgba(255,255,255,.5)', boxWidth:10, font:{size:10}, padding:12 } },
+        tooltip:{
+          backgroundColor:'#0a1430', borderColor:'rgba(203,230,245,.25)', borderWidth:1,
+          titleColor:'#fff', bodyColor:'rgba(255,255,255,.7)',
+          callbacks:{
+            label: c => c.dataset.yAxisID === 'y'
+              ? ' Gasto: R$ ' + c.parsed.y.toFixed(2)
+              : ` ${c.dataset.label}: ${c.parsed.y}`
+          }
+        }
+      },
+      scales:{
+        x: { ticks:{ color:'rgba(255,255,255,.4)', font:{size:10}, maxTicksLimit:14 }, grid:{ color:'rgba(255,255,255,.04)' } },
+        y: { position:'left', ticks:{ color:'rgba(203,230,245,.6)', font:{size:10}, callback:v=>'R$'+v }, grid:{ color:'rgba(255,255,255,.04)' } },
+        y2:{ position:'right', ticks:{ color:'rgba(214,184,122,.6)', font:{size:10} }, grid:{ display:false }, min:0 }
+      }
+    }
+  });
+}
+
+function highlightDay(date) {
+  if (!ch) return;
+  const idx = D.daily.findIndex(d => d.date === date);
+  ch.data.datasets[0].backgroundColor = D.daily.map((_,i) =>
+    date === 'all' ? 'rgba(203,230,245,.55)' :
+    i === idx ? 'rgba(203,230,245,1)' : 'rgba(203,230,245,.12)'
+  );
+  ch.update();
+}
+
+/* ── Sort + Campaign table ────────────────────────────── */
+function srt(key) {
+  if (srtK === key) srtDir *= -1; else { srtK = key; srtDir = -1; }
+  document.querySelectorAll('th').forEach(th => th.classList.remove('sort-asc','sort-desc'));
+  const th = [...document.querySelectorAll('th')].find(t => (t.getAttribute('onclick')||'') === `srt('${key}')`);
+  if (th) th.classList.add(srtDir > 0 ? 'sort-asc' : 'sort-desc');
+  renderCamps(D.campaigns);
+}
+
+function renderCamps(camps) {
+  const tbody = document.getElementById('camps-body');
+  const rows  = camps.map(c => getCMet(c, selD));
+  rows.sort((a,b) => {
+    const av = a[srtK] ?? 0, bv = b[srtK] ?? 0;
+    return typeof av === 'string' ? av.localeCompare(bv) * srtDir : (av - bv) * srtDir;
+  });
+  const visible = rows.filter(r => r.spend > 0 || r.page_view > 0);
+  document.getElementById('camps-badge').textContent = visible.length + ' campanha' + (visible.length===1?'':'s');
+  tbody.innerHTML = visible.map(c => `
+    <tr>
+      <td class="trunc" title="${esc(c.name)}">${esc(c.name)}</td>
+      <td class="tr mono pt">${fmtC(c.spend)}</td>
+      <td class="tr mono">${fmtN(c.page_view || 0)}</td>
+      <td class="tr mono" style="color:#4ade80">${fmtN(c.add_to_cart || 0)}</td>
+      <td class="tr mono" style="color:#67e8f9">${fmtN(c.contact || 0)}</td>
+      <td class="tr mono" style="color:#a78bfa">${fmtN(c.complete_reg || 0)}</td>
+      <td class="tr mono" style="color:#d6b87a;font-weight:700">${fmtN(c.leads || 0)}</td>
+      <td class="tr mono">${c.cpl > 0 ? fmtC(c.cpl) : '<span class="dim">—</span>'}</td>
+      <td class="tr mono">${fmtP(c.connect_rate || 0)}</td>
+      <td class="tr mono">${fmtP(c.lp_conv || 0)}</td>
+      <td class="tr mono dim">${fmtC(c.cpm)}</td>
+      <td class="tr mono dim">${fmtN(c.impressions)}</td>
+      <td><span class="sbdg ${c.status === 'ACTIVE' ? 's-act' : 's-pau'}">
+        ${c.status === 'ACTIVE' ? '● Ativa' : '⏸ Pausada'}
+      </span></td>
+    </tr>`).join('');
+}
+
+/* ── Creative cards ───────────────────────────────────── */
+function renderAds(ads) {
+  const grid   = document.getElementById('cr-grid');
+  const sorted = [...(ads||[])].sort((a,b) => (b.spend||0) - (a.spend||0));
+  document.getElementById('ads-badge').textContent = sorted.length + ' criativo' + (sorted.length===1?'':'s');
+
+  grid.innerHTML = sorted.map(ad => {
+    const previewUrl = ad.preview_url || '';
+    const isOn = ad.ad_on === true;
+    const statusBadge = `<span class="cr-sbadge ${isOn ? 'on' : 'off'}">${isOn ? '● ON' : '⏸ OFF'}</span>`;
+    const imgTag = ad.thumbnail
+      ? `<img src="${ad.thumbnail}" class="cr-thumb" alt="${esc(ad.name)}" loading="lazy" onerror="this.style.display='none'">`
+      : `<div class="cr-ph">🎬</div>`;
+    const thumb = previewUrl
+      ? `<a href="${previewUrl}" target="_blank" rel="noopener" class="cr-thumb-wrap">
+           ${imgTag}<span class="cr-play">▶</span>${statusBadge}
+         </a>`
+      : `<div class="cr-thumb-wrap">${imgTag}${statusBadge}</div>`;
+
+    const atcCs = (ad.add_to_cart||0) > 0
+      ? `<div class="cs"><div class="cs-l">🛒 ATC</div><div class="cs-v gn">${fmtN(ad.add_to_cart)}</div></div>` : '';
+    const conCs = (ad.contact||0) > 0
+      ? `<div class="cs"><div class="cs-l">✉️ Contact</div><div class="cs-v cy">${fmtN(ad.contact)}</div></div>` : '';
+    const cregCs = (ad.complete_reg||0) > 0
+      ? `<div class="cs"><div class="cs-l">📲 CReg</div><div class="cs-v pu">${fmtN(ad.complete_reg)}</div></div>` : '';
+    const leadCs = (ad.leads||0) > 0
+      ? `<div class="cs"><div class="cs-l">🎯 Lead</div><div class="cs-v gold">${fmtN(ad.leads)}</div></div>` : '';
+    const hookCs = ad.hook_rate > 0
+      ? `<div class="cs"><div class="cs-l">Hook</div><div class="cs-v ${ad.hook_rate >= 22 ? 'gn' : 'pt'}">${fmtP(ad.hook_rate)}</div></div>` : '';
+
+    return `<div class="crcrd${isOn ? '' : ' is-off'}">
+      ${thumb}
+      <div class="cr-body">
+        <div class="cr-nm" title="${esc(ad.name)}">${esc(ad.name)}</div>
+        <div class="cr-cp">${esc(ad.adset_name || ad.campaign_name || '')}</div>
+        <div class="cr-stats">
+          <div class="cs"><div class="cs-l">Gasto</div><div class="cs-v pt">${fmtC(ad.spend)}</div></div>
+          <div class="cs"><div class="cs-l">PageView</div><div class="cs-v wh">${fmtN(ad.page_view||0)}</div></div>
+          ${atcCs}${conCs}${cregCs}${leadCs}${hookCs}
+          <div class="cs"><div class="cs-l">CPL</div><div class="cs-v wh">${ad.cpl > 0 ? fmtC(ad.cpl) : '—'}</div></div>
+          <div class="cs"><div class="cs-l">Connect</div><div class="cs-v wh">${fmtP(ad.connect_rate||0)}</div></div>
+        </div>
+        ${previewUrl ? `<a href="${previewUrl}" target="_blank" rel="noopener" class="cr-preview-btn">▶ Ver criativo</a>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Creative Report ──────────────────────────────────── */
+function renderReport(ads) {
+  const active = (ads || []).filter(a => (a.spend || 0) > 0);
+  const TOP = 10;
+  document.getElementById('rep-badge').textContent = active.length + ' criativos';
+
+  function sn(n) { return n.length > 24 ? n.slice(0, 22) + '…' : n; }
+  function ramp(arr, rev) {
+    return arr.map((_, i) => {
+      const t = arr.length <= 1 ? 0 : i / (arr.length - 1);
+      const p = rev ? t : 1 - t;
+      if (p > 0.6) return 'rgba(74,222,128,.78)';
+      if (p > 0.3) return 'rgba(203,230,245,.78)';
+      return 'rgba(251,146,60,.78)';
+    });
+  }
+  function mkChart(id, cfg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const ex = Chart.getChart(el); if (ex) ex.destroy();
+    new Chart(el, cfg);
+  }
+  function hbarOpts(fmtFn) {
+    return {
+      indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          backgroundColor:'#0a1430', borderColor:'rgba(203,230,245,.25)', borderWidth:1,
+          titleColor:'#fff', bodyColor:'rgba(255,255,255,.65)',
+          callbacks:{ label: c => '  ' + fmtFn(c.parsed.x) }
+        }
+      },
+      scales:{
+        x:{ ticks:{ color:'rgba(255,255,255,.35)', font:{size:10}, callback:v=>fmtFn(v) }, grid:{ color:'rgba(255,255,255,.04)' } },
+        y:{ ticks:{ color:'rgba(255,255,255,.6)', font:{size:10} }, grid:{ display:false } }
+      }
+    };
+  }
+
+  // 1. Gasto
+  const bySpend = [...active].sort((a,b) => b.spend - a.spend).slice(0, TOP);
+  mkChart('rep-spend', {
+    type:'bar',
+    data:{ labels: bySpend.map(a => sn(a.name)),
+           datasets:[{ data: bySpend.map(a => a.spend), backgroundColor: ramp(bySpend, false), borderRadius:4, barThickness:18 }] },
+    options: hbarOpts(v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}))
+  });
+
+  // 2. Leads
+  const byLeads = [...active].sort((a,b) => (b.leads||0) - (a.leads||0)).slice(0, TOP);
+  mkChart('rep-leads', {
+    type:'bar',
+    data:{ labels: byLeads.map(a => sn(a.name)),
+           datasets:[{ data: byLeads.map(a => a.leads||0), backgroundColor: ramp(byLeads, false), borderRadius:4, barThickness:18 }] },
+    options: hbarOpts(v => v + ' leads')
+  });
+
+  // 3. CPL
+  const byCpl = [...active].filter(a => a.cpl > 0).sort((a,b) => a.cpl - b.cpl).slice(0, TOP);
+  if (byCpl.length) {
+    mkChart('rep-cpl', {
+      type:'bar',
+      data:{ labels: byCpl.map(a => sn(a.name)),
+             datasets:[{ data: byCpl.map(a => a.cpl), backgroundColor: ramp(byCpl, true), borderRadius:4, barThickness:18 }] },
+      options: hbarOpts(v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}))
+    });
+  } else {
+    mkChart('rep-cpl', {
+      type:'bar',
+      data:{ labels:['Aguardando primeiro Lead Pixel'], datasets:[{ data:[0], backgroundColor:['rgba(255,255,255,.08)'], barThickness:18 }] },
+      options: hbarOpts(v => 'R$ ' + v.toFixed(2))
+    });
+  }
+
+  // 4. AddToCart per ad
+  const byAtc = [...active].sort((a,b) => (b.add_to_cart||0) - (a.add_to_cart||0)).slice(0, TOP);
+  mkChart('rep-atc', {
+    type:'bar',
+    data:{ labels: byAtc.map(a => sn(a.name)),
+           datasets:[{ data: byAtc.map(a => a.add_to_cart||0),
+                       backgroundColor: byAtc.map(_ => 'rgba(74,222,128,.7)'),
+                       borderRadius:4, barThickness:18 }] },
+    options: hbarOpts(v => v + ' ATC')
+  });
+
+  // 5. Connect Rate
+  const byCr = [...active].filter(a => (a.connect_rate||0) > 0)
+                           .sort((a,b) => b.connect_rate - a.connect_rate).slice(0, TOP);
+  mkChart('rep-cr', {
+    type:'bar',
+    data:{ labels: byCr.map(a => sn(a.name)),
+           datasets:[{ data: byCr.map(a => a.connect_rate),
+                       backgroundColor: ramp(byCr, false), borderRadius:4, barThickness:18 }] },
+    options: hbarOpts(v => v.toFixed(1) + '%')
+  });
+
+  // 6. Bubble: Spend × CPL (or × Cost-per-PageView when no leads yet)
+  let bubbleData = active.filter(a => a.cpl > 0 && a.spend > 0).map(a => ({
+    x: a.spend, y: a.cpl,
+    r: Math.max(4, Math.min(22, Math.sqrt((a.leads || 1)) * 3)),
+    _name: sn(a.name), _val: a.leads, _label:'Leads', _on: a.ad_on,
+  }));
+  // Fallback while no leads: bubble = PageView count, y = cost per PageView
+  let yLabel = 'CPL (R$)';
+  if (!bubbleData.length) {
+    bubbleData = active.filter(a => a.spend > 0).map(a => ({
+      x: a.spend, y: a.cp_page_view || 0,
+      r: Math.max(4, Math.min(22, Math.sqrt((a.page_view || 1)) * 3)),
+      _name: sn(a.name), _val: a.page_view || 0, _label:'PageViews', _on: a.ad_on,
+    }));
+    yLabel = 'Custo / PageView (R$)';
+  }
+  mkChart('rep-bubble', {
+    type:'bubble',
+    data:{ datasets:[{
+      data: bubbleData,
+      backgroundColor: bubbleData.map(b => b._on ? 'rgba(74,222,128,.55)' : 'rgba(251,146,60,.45)'),
+      borderColor:    bubbleData.map(b => b._on ? 'rgba(74,222,128,.9)'  : 'rgba(251,146,60,.8)'),
+      borderWidth:1
+    }] },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          backgroundColor:'#0a1430', borderColor:'rgba(203,230,245,.25)', borderWidth:1,
+          titleColor:'#fff', bodyColor:'rgba(255,255,255,.65)',
+          callbacks:{
+            title: items => items[0]?.raw?._name || '',
+            label: item => {
+              const r = item.raw;
+              return [
+                `  Gasto: R$ ${r.x.toLocaleString('pt-BR',{minimumFractionDigits:2})}`,
+                `  ${yLabel.replace(' (R$)','')}: R$ ${r.y.toLocaleString('pt-BR',{minimumFractionDigits:2})}`,
+                `  ${r._label}: ${r._val}`,
+                `  Status: ${r._on ? '● ON' : '⏸ OFF'}`,
+              ];
+            }
+          }
+        }
+      },
+      scales:{
+        x:{ title:{ display:true, text:'Gasto (R$)', color:'rgba(255,255,255,.35)', font:{size:10} },
+            ticks:{ color:'rgba(255,255,255,.35)', font:{size:10}, callback:v=>'R$'+v },
+            grid:{ color:'rgba(255,255,255,.04)' } },
+        y:{ title:{ display:true, text:yLabel, color:'rgba(255,255,255,.35)', font:{size:10} },
+            ticks:{ color:'rgba(255,255,255,.35)', font:{size:10}, callback:v=>'R$'+v },
+            grid:{ color:'rgba(255,255,255,.04)' } }
+      }
+    }
+  });
+}
+
+/* ── Scale Plan ───────────────────────────────────────── */
+function renderScalePlan() {
+  const m      = D.summary;
+  const ads    = (D.ads    || []).filter(a => a.spend > 0);
+  const curSpend = m.spend    || 0;
+  const curLeads = m.leads    || 0;
+  let   curCpl   = curLeads > 0 ? curSpend / curLeads : 0;
+  const curCr    = m.connect_rate || 0;
+  const curHook  = m.hook_rate    || 0;
+
+  // No leads yet — fall back to cost-per-PageView for the projection so the section still has signal
+  let proxyMode = false;
+  let proxyLabel = '';
+  if (!curCpl) {
+    if (m.page_view > 0) {
+      curCpl = m.cp_page_view || (curSpend / m.page_view);
+      proxyMode = true;
+      proxyLabel = 'CPV (R$ por PageView) — Lead ainda sem registros';
+    } else {
+      return; // nothing to project
+    }
+  }
+
+  const mults = [1, 1.5, 2, 3, 5, 10];
+  const labs  = ['Atual', '1.5×', '2×', '3×', '5×', '10×'];
+
+  function cplAt(mult, pct) {
+    if (mult <= 1) return curCpl;
+    return curCpl * Math.pow(1 + pct / 100, Math.log2(mult));
+  }
+  const opt    = mults.map(x => cplAt(x, 5));
+  const real   = mults.map(x => cplAt(x, 13));
+  const cons   = mults.map(x => cplAt(x, 28));
+  const spends = mults.map(x => curSpend * x);
+  const leadsR = mults.map((x, i) => Math.round(spends[i] / real[i]));
+  const leadsO = mults.map((x, i) => Math.round(spends[i] / opt[i]));
+
+  const scEl = document.getElementById('scale-chart');
+  if (scEl) {
+    const ex = Chart.getChart(scEl); if (ex) ex.destroy();
+    new Chart(scEl, {
+      data:{
+        labels: labs,
+        datasets:[
+          { type:'bar', label: proxyMode ? 'PageViews (realista)' : 'Leads (realista)',
+            data: leadsR, backgroundColor:'rgba(203,230,245,.22)',
+            borderColor:'rgba(203,230,245,.55)', borderWidth:1,
+            borderRadius:4, yAxisID:'y2', order:4 },
+          { type:'line', label:'CPL Otimista (+5%/2×)',
+            data: opt, borderColor:'rgba(74,222,128,.85)',
+            backgroundColor:'transparent', pointBackgroundColor:'rgba(74,222,128,.85)',
+            pointRadius:4, tension:.35, yAxisID:'y', order:1 },
+          { type:'line', label:'CPL Realista (+13%/2×)',
+            data: real, borderColor:'rgba(214,184,122,.95)',
+            backgroundColor:'transparent', pointBackgroundColor:'rgba(214,184,122,.95)',
+            pointRadius:5, pointHoverRadius:7, tension:.35, yAxisID:'y', order:2,
+            borderWidth:2 },
+          { type:'line', label:'CPL Conservador (+28%/2×)',
+            data: cons, borderColor:'rgba(248,113,113,.8)',
+            backgroundColor:'transparent', pointBackgroundColor:'rgba(248,113,113,.8)',
+            pointRadius:4, tension:.35, yAxisID:'y', order:3, borderDash:[5,4] },
+        ]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{ mode:'index', intersect:false },
+        plugins:{
+          legend:{ display:true, labels:{ color:'rgba(255,255,255,.5)', boxWidth:10, font:{size:10}, padding:14 } },
+          tooltip:{
+            backgroundColor:'#0a1430', borderColor:'rgba(203,230,245,.25)', borderWidth:1,
+            titleColor:'#fff', bodyColor:'rgba(255,255,255,.65)',
+            callbacks:{ label: c => c.dataset.yAxisID === 'y2'
+              ? `  ${proxyMode ? 'PVs' : 'Leads'}: ${c.parsed.y}`
+              : `  ${c.dataset.label}: R$ ${c.parsed.y.toFixed(2)}` }
+          }
+        },
+        scales:{
+          x:{ ticks:{ color:'rgba(255,255,255,.5)', font:{size:12}, padding:4 }, grid:{ color:'rgba(255,255,255,.04)' } },
+          y:{ position:'left',
+              title:{ display:true, text: proxyMode ? proxyLabel : 'CPL (R$)', color:'rgba(255,255,255,.35)', font:{size:10} },
+              ticks:{ color:'rgba(203,230,245,.6)', font:{size:10}, callback:v=>'R$'+v.toFixed(0) },
+              grid:{ color:'rgba(255,255,255,.04)' } },
+          y2:{ position:'right',
+               title:{ display:true, text: proxyMode ? 'PageViews' : 'Leads', color:'rgba(255,255,255,.35)', font:{size:10} },
+               ticks:{ color:'rgba(214,184,122,.6)', font:{size:10} },
+               grid:{ display:false }, min:0 }
+        }
+      }
+    });
+  }
+
+  const tbl = document.getElementById('scale-tbl');
+  if (tbl) {
+    const fc = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+    const fn = v => Number(v).toLocaleString('pt-BR');
+    tbl.innerHTML = `
+      <thead><tr>
+        <th>Cenário</th>
+        <th class="tr">💰 Investimento</th>
+        <th class="tr" style="color:rgba(74,222,128,.85)">🟢 ${proxyMode?'CPV':'CPL'} Otimista</th>
+        <th class="tr" style="color:rgba(214,184,122,.95)">🟡 ${proxyMode?'CPV':'CPL'} Realista</th>
+        <th class="tr" style="color:rgba(248,113,113,.85)">🔴 ${proxyMode?'CPV':'CPL'} Conservador</th>
+        <th class="tr" style="color:rgba(203,230,245,.85)">🎯 ${proxyMode?'PageViews':'Leads'} (realista)</th>
+        <th class="tr" style="color:rgba(74,222,128,.7)">🎯 ${proxyMode?'PageViews':'Leads'} (otimista)</th>
+      </tr></thead>
+      <tbody>
+        ${mults.map((_, i) => `
+          <tr${i===0?' class="sc-cur"':''}>
+            <td>${labs[i]}${i===0?' ← atual':''}</td>
+            <td class="tr mono">${fc(spends[i])}</td>
+            <td class="tr mono" style="color:rgba(74,222,128,.85)">${fc(opt[i])}</td>
+            <td class="tr mono" style="color:rgba(214,184,122,.95)">${fc(real[i])}</td>
+            <td class="tr mono" style="color:rgba(248,113,113,.85)">${fc(cons[i])}</td>
+            <td class="tr mono" style="color:rgba(203,230,245,.85)">${fn(leadsR[i])}</td>
+            <td class="tr mono" style="color:rgba(74,222,128,.7)">${fn(leadsO[i])}</td>
+          </tr>`).join('')}
+      </tbody>`;
+  }
+
+  const withLeads = ads.filter(a => (a.leads||0) > 0 && a.cpl > 0);
+  const topAds    = [...withLeads].sort((a,b) => a.cpl - b.cpl).slice(0, 3);
+  const worstAds  = [...withLeads].sort((a,b) => b.cpl - a.cpl)
+                                   .filter(a => a.cpl > curCpl * 1.35).slice(0, 2);
+  const fc2 = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  const items = [];
+
+  if (proxyMode) {
+    items.push({
+      ico:'🚧', prio:'hi',
+      ttl:'Aguardando primeiros Leads — confirme o pixel da página final',
+      desc:`Já existem <strong>${m.page_view||0} PageViews</strong> e <strong>${m.add_to_cart||0} AddToCart</strong>, mas o evento <strong>Lead</strong> ainda não disparou. Verifique se a página final ("obrigado/recebemos/em breve") tem o snippet do Pixel disparando <code>Lead</code>. Sem esse evento, CPL fica indefinido e a otimização da campanha fica cega.`
+    });
+  }
+
+  if (m.add_to_cart && m.page_view) {
+    const atcRate = (m.add_to_cart / m.page_view * 100);
+    if (atcRate < 12) items.push({
+      ico:'🛒', prio:'md',
+      ttl:`AddToCart abaixo do esperado (${atcRate.toFixed(1)}% dos PageViews)`,
+      desc:`O CTA da landing page está convertendo pouco. Teste: contraste do botão, copy do CTA ("Quero entrar para a mentoria" vs alternativas), posição do botão acima da dobra e prova social próxima ao CTA.`
+    });
+  }
+
+  if (topAds.length) items.push({
+    ico:'🔝', prio:'hi',
+    ttl:'Concentre orçamento nos criativos top',
+    desc: topAds.map(a => `<strong>${esc(a.name).slice(0,22)}</strong> (CPL ${fc2(a.cpl)})`).join(', ')
+      + ' têm o menor custo por lead. Priorize esses conjuntos antes de abrir novos.'
+  });
+
+  if (worstAds.length) items.push({
+    ico:'⏸', prio:'hi',
+    ttl:'Pause criativos com CPL muito acima da média',
+    desc: worstAds.map(a => `<strong>${esc(a.name).slice(0,22)}</strong> (CPL ${fc2(a.cpl)})`).join(', ')
+      + ` — ${((worstAds[0].cpl/curCpl-1)*100).toFixed(0)}%+ acima do CPL médio (${fc2(curCpl)}).`
+  });
+
+  items.push({
+    ico:'📈', prio:'hi',
+    ttl:'Escale o orçamento de forma gradual (+20-30%/semana)',
+    desc:`Aumentos abruptos forçam o algoritmo a sair do aprendizado e elevam o CPL temporariamente. Suba <strong>20-30% por semana</strong> e aguarde estabilizar antes do próximo aumento.`
+  });
+
+  if (curCr < 50) items.push({
+    ico:'🔗', prio: curCr < 30 ? 'hi' : 'md',
+    ttl:'Otimize a Landing Page (Connect Rate baixo)',
+    desc:`Connect Rate de <strong>${curCr.toFixed(1)}%</strong> indica que muitos cliques não chegam ao conteúdo. Cheque velocidade, peso de imagens e compatibilidade mobile da LP. <strong>Meta: 60-75%.</strong>`
+  });
+
+  if (curHook > 0 && curHook < 22) items.push({
+    ico:'🎣', prio:'md',
+    ttl:'Melhore o Hook Rate dos vídeos',
+    desc:`Hook Rate de <strong>${curHook.toFixed(1)}%</strong> — os primeiros 3 segundos não estão prendendo atenção. Teste hooks com pergunta direta à dor, número impactante (15k/mês) ou prova social rápida.`
+  });
+
+  items.push({
+    ico:'🎯', prio:'md',
+    ttl:'Expanda com públicos semelhantes (LAL)',
+    desc:`Com a base de leads/PageViews que se acumular, crie LALs de 1% a partir dos conversores (CompleteReg ou Lead). Públicos semelhantes permitem escalar para novos usuários mantendo relevância.`
+  });
+
+  items.push({
+    ico:'🧪', prio:'md',
+    ttl:'Crie volume criativo antes de escalar muito',
+    desc:`Para escalar 3× sem subir CPL você precisa de <strong>diversidade criativa</strong>. Meta: 3-5 novos criativos por semana com ângulos distintos — autoridade Pontus, faturamento, prova de protocolo, transformação.`
+  });
+
+  items.push({
+    ico:'👁️', prio:'lo',
+    ttl:'Monitore frequência ao escalar',
+    desc:`Mais orçamento na mesma audiência sobe a frequência e cansa o criativo. Se a frequência ultrapassar <strong>2.5-3×</strong>, expanda públicos ou renove criativos.`
+  });
+
+  const prioLbl = { hi:'🔴 Alta prioridade', md:'🟡 Média prioridade', lo:'⚪ Atenção' };
+  const prioClass = { hi:'prio-hi', md:'prio-md', lo:'prio-lo' };
+
+  document.getElementById('action-grid').innerHTML = items.map(it => `
+    <div class="actn">
+      <span class="actn-ico">${it.ico}</span>
+      <div>
+        <div class="actn-ttl">${it.ttl}</div>
+        <div class="actn-desc">${it.desc}</div>
+        <span class="actn-prio ${prioClass[it.prio]}">${prioLbl[it.prio]}</span>
+      </div>
+    </div>`).join('');
+}
+
+init();
+</script>
+</body>
+</html>
