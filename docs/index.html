@@ -1003,6 +1003,7 @@ function renderAds(ads) {
         <div class="cr-stats">
           <div class="cs"><div class="cs-l">Gasto</div><div class="cs-v pt">${fmtC(ad.spend)}</div></div>
           <div class="cs"><div class="cs-l">PageView</div><div class="cs-v wh">${fmtN(ad.page_view||0)}</div></div>
+          <div class="cs"><div class="cs-l">Custo PV</div><div class="cs-v pt">${(ad.cp_page_view||0) > 0 ? fmtC(ad.cp_page_view) : ((ad.page_view||0) > 0 ? fmtC((ad.spend||0)/ad.page_view) : '—')}</div></div>
           ${atcCs}${conCs}${cregCs}${leadCs}${hookCs}
           <div class="cs"><div class="cs-l">CPL</div><div class="cs-v wh">${ad.cpl > 0 ? fmtC(ad.cpl) : '—'}</div></div>
           <div class="cs"><div class="cs-l">Connect</div><div class="cs-v wh">${fmtP(ad.connect_rate||0)}</div></div>
