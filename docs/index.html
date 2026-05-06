@@ -356,10 +356,10 @@ tr:hover td{background:rgba(203,230,245,.03)}
     <div class="sb-sum-ttl">Resumo do período</div>
     <div class="sb-row"><span class="sb-lbl">💰 Gasto</span><span class="sb-val" id="ss-spend">—</span></div>
     <div class="sb-row wh"><span class="sb-lbl">👁️ PageView</span><span class="sb-val" id="ss-pv">—</span></div>
-    <div class="sb-row gn"><span class="sb-lbl">🛒 AddToCart</span><span class="sb-val" id="ss-atc">—</span></div>
-    <div class="sb-row cy"><span class="sb-lbl">✉️ Contact</span><span class="sb-val" id="ss-contact">—</span></div>
-    <div class="sb-row pu"><span class="sb-lbl">📲 CompleteReg</span><span class="sb-val" id="ss-creg">—</span></div>
-    <div class="sb-row"><span class="sb-lbl">🎯 Lead</span><span class="sb-val" id="ss-leads" style="color:#d6b87a">—</span></div>
+    <div class="sb-row gn"><span class="sb-lbl">🛒 Botão LP</span><span class="sb-val" id="ss-atc">—</span></div>
+    <div class="sb-row cy"><span class="sb-lbl">✉️ E-mail</span><span class="sb-val" id="ss-contact">—</span></div>
+    <div class="sb-row pu"><span class="sb-lbl">📲 WhatsApp</span><span class="sb-val" id="ss-creg">—</span></div>
+    <div class="sb-row"><span class="sb-lbl">🎯 Forms</span><span class="sb-val" id="ss-leads" style="color:#d6b87a">—</span></div>
     <div class="sb-row wh"><span class="sb-lbl">📊 CPL</span><span class="sb-val" id="ss-cpl">—</span></div>
   </div>
 </nav>
@@ -411,7 +411,7 @@ tr:hover td{background:rgba(203,230,245,.03)}
         </svg>
         <div class="g-ctr">
           <span class="g-num" id="gn-lp" style="color:#d6b87a">—</span>
-          <span class="g-unit">Lead/PageView</span>
+          <span class="g-unit">Forms/PageView</span>
         </div>
       </div>
       <div class="g-foot" id="gf-lp">—</div>
@@ -451,14 +451,14 @@ tr:hover td{background:rgba(203,230,245,.03)}
       <div class="k-sub" id="k-spend-sub">—</div>
     </div>
     <div class="kcrd mu">
-      <div class="k-lbl">🎯 Leads (final)</div>
+      <div class="k-lbl">🎯 Forms Finalizados</div>
       <div class="k-val" id="k-leads">—</div>
-      <div class="k-sub" id="k-leads-sub">Lead Pixel · página final</div>
+      <div class="k-sub" id="k-leads-sub">Pixel · Forms Finalizados</div>
     </div>
     <div class="kcrd mu">
       <div class="k-lbl">📊 CPL</div>
       <div class="k-val" id="k-cpl">—</div>
-      <div class="k-sub">Custo por Lead final</div>
+      <div class="k-sub">Custo por Forms Finalizado</div>
     </div>
     <div class="kcrd mu">
       <div class="k-lbl">📢 CPM</div>
@@ -485,8 +485,8 @@ tr:hover td{background:rgba(203,230,245,.03)}
       </div>
 
       <div class="fcrd s2">
-        <div class="f-step"><span>02 · AddToCart</span><span class="f-num-step">2</span></div>
-        <div class="f-lbl">Clicou no botão da LP</div>
+        <div class="f-step"><span>02 · BOTÃO LP</span><span class="f-num-step">2</span></div>
+        <div class="f-lbl">Clicou no Botão da LP</div>
         <div class="f-num" id="f-atc">—</div>
         <div class="f-cost">Custo: <span id="f-atc-cost">—</span></div>
         <div class="f-pbr"><div class="f-pbf" id="f-atc-bar" style="width:0%"></div></div>
@@ -494,30 +494,30 @@ tr:hover td{background:rgba(203,230,245,.03)}
       </div>
 
       <div class="fcrd s3">
-        <div class="f-step"><span>03 · Contact</span><span class="f-num-step">3</span></div>
-        <div class="f-lbl">Etapa do e-mail</div>
+        <div class="f-step"><span>03 · E-MAIL</span><span class="f-num-step">3</span></div>
+        <div class="f-lbl">Enviou o E-mail</div>
         <div class="f-num" id="f-contact">—</div>
         <div class="f-cost">Custo: <span id="f-contact-cost">—</span></div>
         <div class="f-pbr"><div class="f-pbf" id="f-contact-bar" style="width:0%"></div></div>
-        <div class="f-rate"><strong id="f-contact-rate">—</strong> dos AddToCart</div>
+        <div class="f-rate"><strong id="f-contact-rate">—</strong> dos cliques no botão</div>
       </div>
 
       <div class="fcrd s4">
-        <div class="f-step"><span>04 · CompleteReg</span><span class="f-num-step">4</span></div>
-        <div class="f-lbl">Etapa do WhatsApp</div>
+        <div class="f-step"><span>04 · WHATSAPP</span><span class="f-num-step">4</span></div>
+        <div class="f-lbl">Enviou o WhatsApp</div>
         <div class="f-num" id="f-creg">—</div>
         <div class="f-cost">Custo: <span id="f-creg-cost">—</span></div>
         <div class="f-pbr"><div class="f-pbf" id="f-creg-bar" style="width:0%"></div></div>
-        <div class="f-rate"><strong id="f-creg-rate">—</strong> dos Contact</div>
+        <div class="f-rate"><strong id="f-creg-rate">—</strong> dos e-mails</div>
       </div>
 
       <div class="fcrd s5">
-        <div class="f-step"><span>05 · Lead</span><span class="f-num-step">5</span></div>
-        <div class="f-lbl">Página de obrigado</div>
+        <div class="f-step"><span>05 · FORMS</span><span class="f-num-step">5</span></div>
+        <div class="f-lbl">Finalizou o Forms</div>
         <div class="f-num" id="f-lead">—</div>
         <div class="f-cost">Custo: <span id="f-lead-cost">—</span></div>
         <div class="f-pbr"><div class="f-pbf" id="f-lead-bar" style="width:0%"></div></div>
-        <div class="f-rate"><strong id="f-lead-rate">—</strong> dos CompleteReg</div>
+        <div class="f-rate"><strong id="f-lead-rate">—</strong> dos WhatsApp enviados</div>
       </div>
 
     </div>
@@ -564,13 +564,13 @@ tr:hover td{background:rgba(203,230,245,.03)}
             <th onclick="srt('name')">Campanha</th>
             <th class="tr" onclick="srt('spend')">Gasto</th>
             <th class="tr" onclick="srt('page_view')">👁️ PageView</th>
-            <th class="tr" onclick="srt('add_to_cart')" style="color:#4ade80">🛒 ATC</th>
-            <th class="tr" onclick="srt('contact')" style="color:#67e8f9">✉️ Contact</th>
-            <th class="tr" onclick="srt('complete_reg')" style="color:#a78bfa">📲 CReg</th>
-            <th class="tr" onclick="srt('leads')" style="color:#d6b87a">🎯 Lead</th>
+            <th class="tr" onclick="srt('add_to_cart')" style="color:#4ade80">🛒 Botão LP</th>
+            <th class="tr" onclick="srt('contact')" style="color:#67e8f9">✉️ E-mail</th>
+            <th class="tr" onclick="srt('complete_reg')" style="color:#a78bfa">📲 WhatsApp</th>
+            <th class="tr" onclick="srt('leads')" style="color:#d6b87a">🎯 Forms</th>
             <th class="tr" onclick="srt('cpl')">CPL</th>
             <th class="tr" onclick="srt('connect_rate')">Connect%</th>
-            <th class="tr" onclick="srt('lp_conv')">Lead/PV%</th>
+            <th class="tr" onclick="srt('lp_conv')">Forms/PV%</th>
             <th class="tr" onclick="srt('cpm')">CPM</th>
             <th class="tr" onclick="srt('impressions')">Impr.</th>
             <th>Status</th>
@@ -605,7 +605,7 @@ tr:hover td{background:rgba(203,230,245,.03)}
       </div>
       <div class="rcrd">
         <div class="card-ttl" style="margin-bottom:10px">
-          <span>🎯 Leads por Criativo</span><span class="bsm bsm-pt">Top 10</span>
+          <span>🎯 Forms Finalizados por Criativo</span><span class="bsm bsm-pt">Top 10</span>
         </div>
         <div class="rcnv"><canvas id="rep-leads"></canvas></div>
       </div>
@@ -617,7 +617,7 @@ tr:hover td{background:rgba(203,230,245,.03)}
       </div>
       <div class="rcrd">
         <div class="card-ttl" style="margin-bottom:10px">
-          <span>🛒 AddToCart por Criativo</span><span class="bsm bsm-gn">Top 10</span>
+          <span>🛒 Cliques no Botão por Criativo</span><span class="bsm bsm-gn">Top 10</span>
         </div>
         <div class="rcnv"><canvas id="rep-atc"></canvas></div>
       </div>
@@ -755,7 +755,7 @@ function render() {
     `Conta: <strong>${D.account.name}</strong> (${D.account.id}) &nbsp;·&nbsp;
      Atualizado: <strong>${fdt(D.last_updated)}</strong> &nbsp;·&nbsp;
      Connect Rate = PageViews / Cliques no Link &nbsp;·&nbsp;
-     CPL = Gasto / Lead Pixel (página final)`;
+     CPL = Gasto / Forms Finalizados (página final)`;
 }
 
 /* ── Day pills ────────────────────────────────────────── */
@@ -880,13 +880,13 @@ function renderChart() {
           yAxisID:'y2', order:3, borderDash:[4,3]
         },
         {
-          type:'line', label:'AddToCart', data: atcs,
+          type:'line', label:'Botão LP', data: atcs,
           borderColor:'#4ade80', backgroundColor:'transparent',
           pointBackgroundColor:'#4ade80', pointRadius:3, tension:.3, fill:false,
           yAxisID:'y2', order:2
         },
         {
-          type:'line', label:'Lead', data: leads,
+          type:'line', label:'Forms', data: leads,
           borderColor:'#d6b87a', backgroundColor:'transparent',
           pointBackgroundColor:'#d6b87a', pointRadius:4, pointHoverRadius:6,
           tension:.3, fill:false, yAxisID:'y2', order:1, borderWidth:2.4
@@ -985,13 +985,13 @@ function renderAds(ads) {
       : `<div class="cr-thumb-wrap">${imgTag}${statusBadge}</div>`;
 
     const atcCs = (ad.add_to_cart||0) > 0
-      ? `<div class="cs"><div class="cs-l">🛒 ATC</div><div class="cs-v gn">${fmtN(ad.add_to_cart)}</div></div>` : '';
+      ? `<div class="cs"><div class="cs-l">🛒 Botão LP</div><div class="cs-v gn">${fmtN(ad.add_to_cart)}</div></div>` : '';
     const conCs = (ad.contact||0) > 0
-      ? `<div class="cs"><div class="cs-l">✉️ Contact</div><div class="cs-v cy">${fmtN(ad.contact)}</div></div>` : '';
+      ? `<div class="cs"><div class="cs-l">✉️ E-mail</div><div class="cs-v cy">${fmtN(ad.contact)}</div></div>` : '';
     const cregCs = (ad.complete_reg||0) > 0
-      ? `<div class="cs"><div class="cs-l">📲 CReg</div><div class="cs-v pu">${fmtN(ad.complete_reg)}</div></div>` : '';
+      ? `<div class="cs"><div class="cs-l">📲 WhatsApp</div><div class="cs-v pu">${fmtN(ad.complete_reg)}</div></div>` : '';
     const leadCs = (ad.leads||0) > 0
-      ? `<div class="cs"><div class="cs-l">🎯 Lead</div><div class="cs-v gold">${fmtN(ad.leads)}</div></div>` : '';
+      ? `<div class="cs"><div class="cs-l">🎯 Forms</div><div class="cs-v gold">${fmtN(ad.leads)}</div></div>` : '';
     const hookCs = ad.hook_rate > 0
       ? `<div class="cs"><div class="cs-l">Hook</div><div class="cs-v ${ad.hook_rate >= 22 ? 'gn' : 'pt'}">${fmtP(ad.hook_rate)}</div></div>` : '';
 
@@ -1068,7 +1068,7 @@ function renderReport(ads) {
     type:'bar',
     data:{ labels: byLeads.map(a => sn(a.name)),
            datasets:[{ data: byLeads.map(a => a.leads||0), backgroundColor: ramp(byLeads, false), borderRadius:4, barThickness:18 }] },
-    options: hbarOpts(v => v + ' leads')
+    options: hbarOpts(v => v + ' forms')
   });
 
   // 3. CPL
@@ -1083,7 +1083,7 @@ function renderReport(ads) {
   } else {
     mkChart('rep-cpl', {
       type:'bar',
-      data:{ labels:['Aguardando primeiro Lead Pixel'], datasets:[{ data:[0], backgroundColor:['rgba(255,255,255,.08)'], barThickness:18 }] },
+      data:{ labels:['Aguardando primeiro Forms finalizado'], datasets:[{ data:[0], backgroundColor:['rgba(255,255,255,.08)'], barThickness:18 }] },
       options: hbarOpts(v => 'R$ ' + v.toFixed(2))
     });
   }
@@ -1096,7 +1096,7 @@ function renderReport(ads) {
            datasets:[{ data: byAtc.map(a => a.add_to_cart||0),
                        backgroundColor: byAtc.map(_ => 'rgba(74,222,128,.7)'),
                        borderRadius:4, barThickness:18 }] },
-    options: hbarOpts(v => v + ' ATC')
+    options: hbarOpts(v => v + ' cliques')
   });
 
   // 5. Connect Rate
@@ -1211,7 +1211,7 @@ function renderScalePlan() {
       data:{
         labels: labs,
         datasets:[
-          { type:'bar', label: proxyMode ? 'PageViews (realista)' : 'Leads (realista)',
+          { type:'bar', label: proxyMode ? 'PageViews (realista)' : 'Forms (realista)',
             data: leadsR, backgroundColor:'rgba(203,230,245,.22)',
             borderColor:'rgba(203,230,245,.55)', borderWidth:1,
             borderRadius:4, yAxisID:'y2', order:4 },
@@ -1239,7 +1239,7 @@ function renderScalePlan() {
             backgroundColor:'#0a1430', borderColor:'rgba(203,230,245,.25)', borderWidth:1,
             titleColor:'#fff', bodyColor:'rgba(255,255,255,.65)',
             callbacks:{ label: c => c.dataset.yAxisID === 'y2'
-              ? `  ${proxyMode ? 'PVs' : 'Leads'}: ${c.parsed.y}`
+              ? `  ${proxyMode ? 'PVs' : 'Forms'}: ${c.parsed.y}`
               : `  ${c.dataset.label}: R$ ${c.parsed.y.toFixed(2)}` }
           }
         },
@@ -1250,7 +1250,7 @@ function renderScalePlan() {
               ticks:{ color:'rgba(203,230,245,.6)', font:{size:10}, callback:v=>'R$'+v.toFixed(0) },
               grid:{ color:'rgba(255,255,255,.04)' } },
           y2:{ position:'right',
-               title:{ display:true, text: proxyMode ? 'PageViews' : 'Leads', color:'rgba(255,255,255,.35)', font:{size:10} },
+               title:{ display:true, text: proxyMode ? 'PageViews' : 'Forms', color:'rgba(255,255,255,.35)', font:{size:10} },
                ticks:{ color:'rgba(214,184,122,.6)', font:{size:10} },
                grid:{ display:false }, min:0 }
         }
@@ -1297,8 +1297,8 @@ function renderScalePlan() {
   if (proxyMode) {
     items.push({
       ico:'🚧', prio:'hi',
-      ttl:'Aguardando primeiros Leads — confirme o pixel da página final',
-      desc:`Já existem <strong>${m.page_view||0} PageViews</strong> e <strong>${m.add_to_cart||0} AddToCart</strong>, mas o evento <strong>Lead</strong> ainda não disparou. Verifique se a página final ("obrigado/recebemos/em breve") tem o snippet do Pixel disparando <code>Lead</code>. Sem esse evento, CPL fica indefinido e a otimização da campanha fica cega.`
+      ttl:'Aguardando primeiros Forms finalizados — confirme o pixel da página final',
+      desc:`Já existem <strong>${m.page_view||0} PageViews</strong> e <strong>${m.add_to_cart||0} cliques no botão</strong>, mas o evento <strong>Lead</strong> (Forms Finalizado) ainda não disparou. Verifique se a página final ("obrigado/recebemos/em breve") tem o snippet do Pixel disparando <code>Lead</code>. Sem esse evento, CPL fica indefinido e a otimização da campanha fica cega.`
     });
   }
 
@@ -1306,7 +1306,7 @@ function renderScalePlan() {
     const atcRate = (m.add_to_cart / m.page_view * 100);
     if (atcRate < 12) items.push({
       ico:'🛒', prio:'md',
-      ttl:`AddToCart abaixo do esperado (${atcRate.toFixed(1)}% dos PageViews)`,
+      ttl:`Clique no Botão da LP abaixo do esperado (${atcRate.toFixed(1)}% dos PageViews)`,
       desc:`O CTA da landing page está convertendo pouco. Teste: contraste do botão, copy do CTA ("Quero entrar para a mentoria" vs alternativas), posição do botão acima da dobra e prova social próxima ao CTA.`
     });
   }
@@ -1346,7 +1346,7 @@ function renderScalePlan() {
   items.push({
     ico:'🎯', prio:'md',
     ttl:'Expanda com públicos semelhantes (LAL)',
-    desc:`Com a base de leads/PageViews que se acumular, crie LALs de 1% a partir dos conversores (CompleteReg ou Lead). Públicos semelhantes permitem escalar para novos usuários mantendo relevância.`
+    desc:`Com a base de leads/PageViews que se acumular, crie LALs de 1% a partir dos conversores (WhatsApp enviado ou Forms Finalizado). Públicos semelhantes permitem escalar para novos usuários mantendo relevância.`
   });
 
   items.push({
