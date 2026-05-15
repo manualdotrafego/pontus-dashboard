@@ -69,6 +69,39 @@ em.italic{font-family:var(--serif);font-style:italic;font-weight:600;color:var(-
 .day-btn.on{background:var(--ptd);color:var(--pt);font-weight:600}
 .day-btn.on .dot{opacity:1}
 
+/* ── Date-range picker ─────────────────────────────────── */
+.sb-range{padding:10px 14px 12px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-range-ttl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.sb-range-ttl .clear{color:var(--mu2);text-decoration:none;font-size:9px;letter-spacing:.1em;cursor:pointer;border:none;background:none;padding:0;font-family:inherit}
+.sb-range-ttl .clear:hover{color:var(--pt)}
+.sb-range-ttl .clear.show{color:var(--gold)}
+.sb-range-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.sb-range-row label{font-size:10px;color:var(--mu);width:24px;flex-shrink:0}
+.sb-range-row input[type=date]{
+  flex:1;background:var(--card);border:1px solid var(--border2);
+  color:var(--txt);font-family:inherit;font-size:11px;
+  padding:5px 6px;border-radius:5px;outline:none;
+  color-scheme:dark;font-variant-numeric:tabular-nums;
+}
+.sb-range-row input[type=date]:focus{border-color:var(--pt)}
+.sb-range-row input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.8) opacity(.55);cursor:pointer}
+.sb-range-row input[type=date]::-webkit-calendar-picker-indicator:hover{filter:invert(.8) opacity(.95)}
+.sb-range-apply{
+  width:100%;margin-top:4px;padding:6px 10px;border-radius:6px;
+  background:var(--pt);color:#0a1734;border:none;cursor:pointer;
+  font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;transition:all .14s;
+}
+.sb-range-apply:hover{background:#fff;box-shadow:0 0 16px rgba(203,230,245,.25)}
+.sb-range-apply:disabled{background:var(--ptd2);color:var(--mu);cursor:not-allowed;box-shadow:none}
+.sb-range-active{
+  margin-top:6px;padding:5px 8px;border-radius:5px;
+  background:rgba(214,184,122,.08);border:1px solid rgba(214,184,122,.22);
+  color:var(--gold);font-size:10px;font-weight:600;text-align:center;
+  font-variant-numeric:tabular-nums;display:none;
+}
+.sb-range-active.on{display:block}
+
 .sb-sum{padding:14px 18px 18px;border-top:1px solid var(--border);flex-shrink:0}
 .sb-sum-ttl{font-size:9px;text-transform:uppercase;color:var(--mu);letter-spacing:.14em;margin-bottom:11px}
 .sb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -352,8 +385,25 @@ tr:hover td{background:rgba(203,230,245,.03)}
   <div class="sb-sec">Dias com gasto</div>
   <div class="sb-pills" id="day-pills"></div>
 
+  <div class="sb-range">
+    <div class="sb-range-ttl">
+      <span>Período personalizado</span>
+      <button type="button" class="clear" id="rg-clear" onclick="clearRange()">Limpar</button>
+    </div>
+    <div class="sb-range-row">
+      <label for="rg-from">De</label>
+      <input type="date" id="rg-from">
+    </div>
+    <div class="sb-range-row">
+      <label for="rg-to">Até</label>
+      <input type="date" id="rg-to">
+    </div>
+    <button type="button" class="sb-range-apply" id="rg-apply" onclick="applyRange()">Aplicar período</button>
+    <div class="sb-range-active" id="rg-active"></div>
+  </div>
+
   <div class="sb-sum">
-    <div class="sb-sum-ttl">Resumo do período</div>
+    <div class="sb-sum-ttl" id="ss-ttl">Resumo do período</div>
     <div class="sb-row"><span class="sb-lbl">💰 Gasto</span><span class="sb-val" id="ss-spend">—</span></div>
     <div class="sb-row wh"><span class="sb-lbl">👁️ PageView</span><span class="sb-val" id="ss-pv">—</span></div>
     <div class="sb-row gn"><span class="sb-lbl">🛒 Botão LP</span><span class="sb-val" id="ss-atc">—</span></div>
@@ -674,7 +724,7 @@ tr:hover td{background:rgba(203,230,245,.03)}
 </main>
 
 <script>
-let D = null, selD = 'all', ch = null, srtK = 'spend', srtDir = -1;
+let D = null, selD = 'all', selRange = null, ch = null, srtK = 'spend', srtDir = -1;
 const CIRC = 282.74;
 
 /* ── Init ─────────────────────────────────────────────── */
@@ -701,15 +751,137 @@ function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 
 /* ── Data helpers ─────────────────────────────────────── */
 function getMet(date) {
+  if (selRange) return aggDays(D.daily.filter(d => d.date >= selRange.from && d.date <= selRange.to));
   if (!date || date === 'all') return D.summary;
   return D.daily.find(d => d.date === date) || D.summary;
 }
 function getCMet(c, date) {
+  if (selRange) {
+    const days = (c.daily||[]).filter(x => x.date >= selRange.from && x.date <= selRange.to);
+    return {...c, ...aggDays(days)};
+  }
   if (!date || date === 'all') return {...c};
   const d = (c.daily||[]).find(x => x.date === date);
   return d ? {...c, ...d}
     : {...c, spend:0, page_view:0, add_to_cart:0, contact:0, complete_reg:0, leads:0,
        cpl:0, cpm:0, connect_rate:0, lp_conv:0, impressions:0};
+}
+
+/* ── Aggregator (mirrors scripts/fetch_pontus_dashboard.py:aggregate) ── */
+const SUMS = ['spend','impressions','clicks','link_clicks','reach',
+              'page_view','add_to_cart','contact','complete_reg','leads'];
+const VAVG = ['vp25','vp50','vp75','vp100','frequency'];
+
+function aggDays(rows) {
+  const out = {}; SUMS.forEach(k => out[k] = 0);
+  if (!rows || !rows.length) {
+    return {...out, cpm:0, cpc:0, cpl:0,
+      cp_page_view:0, cp_add_to_cart:0, cp_contact:0, cp_complete_reg:0, cp_lead:0,
+      connect_rate:0, atc_rate:0, contact_rate:0, creg_rate:0, lead_rate:0,
+      lp_conv:0, hook_rate:0, vp25:0, vp50:0, vp75:0, vp100:0, frequency:0};
+  }
+  rows.forEach(r => SUMS.forEach(k => out[k] += (Number(r[k])||0)));
+
+  const impr = out.impressions, spend = out.spend, leads = out.leads,
+        pv = out.page_view, atc = out.add_to_cart, contact = out.contact,
+        creg = out.complete_reg, lc = out.link_clicks, clk = out.clicks;
+
+  VAVG.forEach(k => {
+    const s = rows.reduce((acc, r) => acc + (Number(r[k])||0) * (Number(r.impressions)||0), 0);
+    out[k] = impr ? +(s / impr).toFixed(2) : 0;
+  });
+
+  out.spend = +spend.toFixed(2);
+  out.cpm = impr   ? +(spend / impr * 1000).toFixed(2) : 0;
+  out.cpc = clk    ? +(spend / clk).toFixed(2)         : 0;
+  out.cpl = leads  ? +(spend / leads).toFixed(2)       : 0;
+  out.cp_page_view    = pv      ? +(spend / pv).toFixed(2)      : 0;
+  out.cp_add_to_cart  = atc     ? +(spend / atc).toFixed(2)     : 0;
+  out.cp_contact      = contact ? +(spend / contact).toFixed(2) : 0;
+  out.cp_complete_reg = creg    ? +(spend / creg).toFixed(2)    : 0;
+  out.cp_lead         = leads   ? +(spend / leads).toFixed(2)   : 0;
+  out.connect_rate = lc      ? +(pv / lc * 100).toFixed(1)        : 0;
+  out.atc_rate     = pv      ? +(atc / pv * 100).toFixed(1)       : 0;
+  out.contact_rate = atc     ? +(contact / atc * 100).toFixed(1)  : 0;
+  out.creg_rate    = contact ? +(creg / contact * 100).toFixed(1) : 0;
+  out.lead_rate    = creg    ? +(leads / creg * 100).toFixed(1)   : 0;
+  out.lp_conv      = pv      ? +(leads / pv * 100).toFixed(1)     : 0;
+  out.hook_rate    = out.vp25 || 0;
+  return out;
+}
+
+/* ── Range picker ─────────────────────────────────────── */
+function rangeBounds() {
+  const days = (D && D.daily) ? D.daily.map(d => d.date).sort() : [];
+  const dr = (D && D.date_range) || {};
+  return { min: days[0] || dr.since, max: days[days.length-1] || dr.until };
+}
+function initRangeInputs() {
+  const { min, max } = rangeBounds();
+  const f = document.getElementById('rg-from');
+  const t = document.getElementById('rg-to');
+  if (!f || !t) return;
+  if (min) { f.min = min; t.min = min; }
+  if (max) { f.max = max; t.max = max; }
+  if (!f.value) f.value = min || '';
+  if (!t.value) t.value = max || '';
+  document.getElementById('rg-clear').classList.toggle('show', !!selRange);
+}
+function applyRange() {
+  if (!D) return;
+  const f = document.getElementById('rg-from').value;
+  const t = document.getElementById('rg-to').value;
+  if (!f || !t) { alert('Selecione as duas datas (de/até).'); return; }
+  if (f > t)    { alert('A data inicial precisa ser anterior ou igual à data final.'); return; }
+  selRange = { from: f, to: t };
+  selD = 'all';
+  document.querySelectorAll('.day-btn').forEach(p => p.classList.remove('on'));
+  const allBtn = document.querySelector('.day-btn'); // first button = "Todos os dias"
+  if (allBtn) allBtn.classList.add('on');
+  updateSidebarSummary();
+  updateKPIs(getMet(selD));
+  renderCamps(D.campaigns);
+  highlightRange();
+  showRangeBadge();
+  document.getElementById('rg-clear').classList.add('show');
+}
+function clearRange() {
+  if (!selRange) return;
+  selRange = null;
+  document.getElementById('rg-active').classList.remove('on');
+  document.getElementById('rg-clear').classList.remove('show');
+  updateSidebarSummary();
+  updateKPIs(getMet(selD));
+  renderCamps(D.campaigns);
+  if (ch) highlightDay(selD);
+}
+function showRangeBadge() {
+  const el = document.getElementById('rg-active');
+  if (!selRange) { el.classList.remove('on'); return; }
+  el.textContent = fd(selRange.from) + ' → ' + fd(selRange.to);
+  el.classList.add('on');
+}
+function highlightRange() {
+  if (!ch || !selRange) return;
+  ch.data.datasets[0].backgroundColor = D.daily.map(d =>
+    (d.date >= selRange.from && d.date <= selRange.to)
+      ? 'rgba(214,184,122,.85)'
+      : 'rgba(203,230,245,.12)'
+  );
+  ch.update();
+}
+function updateSidebarSummary() {
+  const m = selRange ? getMet('all') : D.summary;
+  document.getElementById('ss-ttl').textContent =
+    selRange ? ('Resumo · ' + fd(selRange.from) + ' → ' + fd(selRange.to))
+             : 'Resumo do período';
+  document.getElementById('ss-spend').textContent   = fmtC(m.spend);
+  document.getElementById('ss-pv').textContent      = fmtN(m.page_view);
+  document.getElementById('ss-atc').textContent     = fmtN(m.add_to_cart);
+  document.getElementById('ss-contact').textContent = fmtN(m.contact);
+  document.getElementById('ss-creg').textContent    = fmtN(m.complete_reg);
+  document.getElementById('ss-leads').textContent   = fmtN(m.leads);
+  document.getElementById('ss-cpl').textContent     = m.cpl > 0 ? fmtC(m.cpl) : '—';
 }
 
 /* ── Gauge helper ─────────────────────────────────────── */
@@ -729,23 +901,18 @@ function render() {
   document.getElementById('tbl-filter').textContent  = (D.camp_filter || 'inlead');
   document.title = D.account.name + ' · Pontus Dashboard';
 
-  // Sidebar lifetime summary
-  const s = D.summary;
-  document.getElementById('ss-spend').textContent   = fmtC(s.spend);
-  document.getElementById('ss-pv').textContent      = fmtN(s.page_view);
-  document.getElementById('ss-atc').textContent     = fmtN(s.add_to_cart);
-  document.getElementById('ss-contact').textContent = fmtN(s.contact);
-  document.getElementById('ss-creg').textContent    = fmtN(s.complete_reg);
-  document.getElementById('ss-leads').textContent   = fmtN(s.leads);
-  document.getElementById('ss-cpl').textContent     = s.cpl > 0 ? fmtC(s.cpl) : '—';
+  // Sidebar summary (respects active range)
+  updateSidebarSummary();
 
   // Header status pill
   const anyActive = (D.campaigns || []).some(c => c.status === 'ACTIVE');
   document.getElementById('hdr-status').textContent = anyActive ? 'CAMPANHA ATIVA' : 'CAMPANHA PAUSADA';
 
   renderPills();
+  initRangeInputs();
   updateKPIs(getMet(selD));
   renderChart();
+  if (selRange) { highlightRange(); showRangeBadge(); }
   renderCamps(D.campaigns);
   renderAds(D.ads);
   renderReport(D.ads);
@@ -786,9 +953,16 @@ function renderPills() {
 
 function selDay(date, btn) {
   selD = date;
+  // Pílula de dia tem precedência sobre range — limpa o range silenciosamente
+  if (selRange) {
+    selRange = null;
+    document.getElementById('rg-active').classList.remove('on');
+    document.getElementById('rg-clear').classList.remove('show');
+  }
   document.querySelectorAll('.day-btn').forEach(p => p.classList.remove('on'));
   btn.classList.add('on');
   if (!D) return;
+  updateSidebarSummary();
   updateKPIs(getMet(date));
   renderCamps(D.campaigns);
   if (ch) highlightDay(date);
