@@ -1,13 +1,13 @@
 {
-  "last_updated": "2026-08-01T19:20:27Z",
+  "last_updated": "2026-08-02T03:39:25Z",
   "account": {
     "id": "act_1772556290384735",
     "name": "NBP - Gui Pontus",
     "currency": "BRL"
   },
   "date_range": {
-    "since": "2026-07-03",
-    "until": "2026-08-01"
+    "since": "2026-07-04",
+    "until": "2026-08-02"
   },
   "camp_filter": "inlead",
   "summary": {
