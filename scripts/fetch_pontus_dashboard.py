@@ -25,7 +25,9 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"))
 TOKEN  = os.getenv("META_ACCESS_TOKEN")
 BASE   = "https://graph.facebook.com/v21.0"
 ACCT   = {"id": "1772556290384735", "name": "NBP - Gui Pontus", "currency": "BRL"}
-FILTER = "inlead"
+# Vazio = todas as campanhas da conta. Antes era "inlead", o que deixava de fora
+# campanhas novas como "[LEAD - PONTUS] - [SPRINT DE CARTEIRA]".
+FILTER = ""
 OUT    = os.path.join(os.path.dirname(__file__), "..", "docs", "data.json")
 
 # Fetch window: from campaign start (or 30 days ago, whichever is later) to today
