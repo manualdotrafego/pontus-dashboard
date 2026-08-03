@@ -604,7 +604,7 @@ tr:hover td{background:rgba(203,230,245,.03)}
   <!-- Campaign table -->
   <div class="tbl-crd">
     <div class="tbl-hdr">
-      <span class="tbl-ttl"><em>Campanhas</em> · filtro: <span id="tbl-filter" style="color:#cbe6f5">inlead</span></span>
+      <span class="tbl-ttl"><em>Campanhas</em> · filtro: <span id="tbl-filter" style="color:#cbe6f5">todas</span></span>
       <span class="bsm bsm-pt" id="camps-badge">—</span>
     </div>
     <div class="tbl-wrap">
@@ -897,8 +897,10 @@ function render() {
   document.getElementById('hdr-acct').textContent    = D.account.name + ' · ' + D.account.id;
   document.getElementById('hdr-range').innerHTML     = '<strong>' + fd(dr.since) + '</strong> → <strong>' + fd(dr.until) + '</strong>';
   document.getElementById('hdr-updated').textContent = 'Atualizado ' + fdt(D.last_updated);
-  document.getElementById('hdr-filter').textContent  = 'Filtro: campanha contém "' + (D.camp_filter || 'inlead') + '"';
-  document.getElementById('tbl-filter').textContent  = (D.camp_filter || 'inlead');
+  document.getElementById('hdr-filter').textContent  = D.camp_filter
+    ? 'Filtro: campanha contém "' + D.camp_filter + '"'
+    : 'Todas as campanhas da conta';
+  document.getElementById('tbl-filter').textContent  = D.camp_filter || 'todas';
   document.title = D.account.name + ' · Pontus Dashboard';
 
   // Sidebar summary (respects active range)
