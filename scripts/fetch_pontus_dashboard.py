@@ -207,6 +207,34 @@ def empty_metrics(date_str=None):
     return z
 
 
+# ── Destino do anúncio / versão da LP ──────────────────────────────────────
+
+def extract_dest(creative):
+    """Primeira URL de destino encontrada no criativo (link_data, video_data ou asset_feed)."""
+    if not creative:
+        return ""
+    blob = json.dumps(creative, ensure_ascii=False)
+    urls = re.findall(r'https?://[^"\\\s]+', blob)
+    for u in urls:
+        if "pontusfinance" in u or "inlead" in u:
+            return u.split("?")[0]
+    return urls[0].split("?")[0] if urls else ""
+
+
+def lp_version(url):
+    """Rotula a versão da landing page a partir da URL de destino."""
+    if not url:
+        return "—"
+    m = re.search(r"/lp-v(\d+)", url)
+    if m:
+        return f"V{m.group(1)}"
+    if "/lp/" in url or url.rstrip("/").endswith("/lp"):
+        return "LP antiga"
+    if "inlead" in url:
+        return "Inlead direto"
+    return "Outro"
+
+
 # ── Aggregator ─────────────────────────────────────────────────────────────
 
 SUMS  = ["spend","impressions","clicks","link_clicks","reach",
@@ -298,21 +326,26 @@ def main():
     })
     print(f"  {len(ad_daily)} ad-day rows")
 
-    # 3. Ad creative meta (thumbnails + status + preview)
+    # 3. Ad creative meta (thumbnails + status + preview + destino/LP)
     print(f"Fetching ad meta + thumbnails...")
     ads_meta = get_all(f"/act_{ACCT['id']}/ads", {
-        "fields":    "id,name,effective_status,creative{thumbnail_url,video_id}",
+        "fields":    ("id,name,effective_status,"
+                      "creative{thumbnail_url,video_id,object_story_spec,asset_feed_spec}"),
         "filtering": flt,
         "limit":     200,
     })
     thumb_map  = {}
     status_map = {}
     video_map  = {}
+    dest_map   = {}   # ad_id -> URL de destino
+    lp_map     = {}   # ad_id -> versão da LP ("V1", "V2", "V3", "LP antiga", "—")
     for a in ads_meta:
         cr = a.get("creative", {}) or {}
         thumb_map[a["id"]]  = cr.get("thumbnail_url", "")
         status_map[a["id"]] = a.get("effective_status", "PAUSED")
         video_map[a["id"]]  = cr.get("video_id", "")
+        dest_map[a["id"]]   = extract_dest(cr)
+        lp_map[a["id"]]     = lp_version(dest_map[a["id"]])
 
     # 4. Preview URLs (only for active ads)
     preview_map = {}
@@ -400,6 +433,50 @@ def main():
         })
     camps_out.sort(key=lambda x: x.get("spend", 0), reverse=True)
 
+    # 7b. Aggregate per adset (com a versão da LP de destino)
+    adsets_meta = get_all(f"/act_{ACCT['id']}/adsets", {
+        "fields":    "id,name,effective_status,daily_budget,optimization_goal",
+        "filtering": flt,
+        "limit":     200,
+    })
+    as_status = {a["id"]: a.get("effective_status", "PAUSED") for a in adsets_meta}
+    as_budget = {a["id"]: a.get("daily_budget") for a in adsets_meta}
+
+    adsets_out = []
+    for asid in {m.get("adset_id") for m in ad_meta.values() if m.get("adset_id")}:
+        ad_ids = [aid for aid, m in ad_meta.items() if m.get("adset_id") == asid]
+        rows   = [m for aid in ad_ids for m in by_ad_day.get(aid, [])]
+        if not rows:
+            continue
+        agg  = aggregate(rows)
+        meta = next(m for m in ad_meta.values() if m.get("adset_id") == asid)
+
+        # versão da LP: a dos anúncios do conjunto (se divergirem, marca "misto")
+        versoes = {lp_map.get(aid) for aid in ad_ids if lp_map.get(aid) and lp_map.get(aid) != "—"}
+        lp = versoes.pop() if len(versoes) == 1 else ("misto" if versoes else "—")
+        destino = next((dest_map.get(aid) for aid in ad_ids if dest_map.get(aid)), "")
+
+        daily = []
+        for d in sorted({r["date"] for r in rows}):
+            d_agg = aggregate([r for r in rows if r["date"] == d])
+            d_agg["date"] = d
+            daily.append(d_agg)
+
+        adsets_out.append({
+            **agg,
+            "id":            asid,
+            "name":          meta.get("adset_name") or asid,
+            "campaign_id":   meta.get("campaign_id", ""),
+            "campaign_name": meta.get("campaign_name", ""),
+            "status":        as_status.get(asid, "PAUSED"),
+            "daily_budget":  (int(as_budget[asid]) / 100) if as_budget.get(asid) else None,
+            "lp":            lp,
+            "destino":       destino,
+            "ads_count":     len(ad_ids),
+            "daily":         daily,
+        })
+    adsets_out.sort(key=lambda x: (x["lp"], -x.get("spend", 0)))
+
     # 8. Daily timeline (aggregate of all matched campaigns)
     daily_out = []
     for d in sorted(by_day_all.keys()):
@@ -423,6 +500,7 @@ def main():
         "summary":      summary,
         "daily":        daily_out,
         "campaigns":    camps_out,
+        "adsets":       adsets_out,
         "ads":          ads_out,
     }
 
