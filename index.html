@@ -134,6 +134,21 @@ em.italic{font-family:var(--serif);font-style:italic;font-weight:600;color:var(-
 .card{background:var(--card);border:1px solid var(--border);border-radius:14px}
 .card-ttl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--mu);
   padding:13px 16px 0;display:flex;justify-content:space-between;align-items:center}
+/* ── Comparativo por versão da LP ─────────────────────── */
+.lp-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;padding:14px 16px 4px}
+.lp-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:13px 15px;position:relative;overflow:hidden}
+.lp-card.win{border-color:rgba(74,222,128,.45);box-shadow:0 0 0 1px rgba(74,222,128,.12) inset}
+.lp-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.lp-tag{font-family:var(--serif);font-style:italic;font-size:17px;font-weight:600;color:var(--pt)}
+.lp-win{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--gn);
+  background:rgba(74,222,128,.12);padding:3px 7px;border-radius:10px}
+.lp-cpl{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.lp-cpl-lbl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.12em;margin-top:3px}
+.lp-row{display:flex;justify-content:space-between;font-size:11px;margin-top:6px}
+.lp-row span:first-child{color:var(--mu)}
+.lp-row span:last-child{font-variant-numeric:tabular-nums}
+.lp-pill{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 8px;
+  border-radius:10px;background:var(--ptd);color:var(--pt)}
 .bsm{font-size:9px;padding:3px 9px;border-radius:12px;font-weight:600;letter-spacing:.04em}
 .bsm-pt{background:var(--ptd);color:var(--pt)}
 .bsm-gn{background:rgba(74,222,128,.12);color:var(--gn)}
@@ -631,6 +646,37 @@ tr:hover td{background:rgba(203,230,245,.03)}
     </div>
   </div>
 
+  <!-- Conjuntos por versão da LP -->
+  <div class="tbl-crd">
+    <div class="tbl-hdr">
+      <span class="tbl-ttl"><em>Conjuntos</em> por versão da LP</span>
+      <span class="bsm bsm-pt" id="lp-badge">—</span>
+    </div>
+    <div id="lp-cards" class="lp-cards"></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>LP</th>
+            <th>Conjunto</th>
+            <th class="tr">Diária</th>
+            <th class="tr">Gasto</th>
+            <th class="tr">👁️ PageView</th>
+            <th class="tr" style="color:#4ade80">🛒 Botão LP</th>
+            <th class="tr" style="color:#d6b87a">🎯 Forms</th>
+            <th class="tr">CPL</th>
+            <th class="tr">Custo/PV</th>
+            <th class="tr">Forms/PV%</th>
+            <th class="tr">CPM</th>
+            <th class="tr">Impr.</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="lp-body"></tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- Creatives -->
   <div class="cr-wrap">
     <div class="cr-hdr">
@@ -841,6 +887,7 @@ function applyRange() {
   updateSidebarSummary();
   updateKPIs(getMet(selD));
   renderCamps(D.campaigns);
+  renderAdsets(D.adsets);
   highlightRange();
   showRangeBadge();
   document.getElementById('rg-clear').classList.add('show');
@@ -853,6 +900,7 @@ function clearRange() {
   updateSidebarSummary();
   updateKPIs(getMet(selD));
   renderCamps(D.campaigns);
+  renderAdsets(D.adsets);
   if (ch) highlightDay(selD);
 }
 function showRangeBadge() {
@@ -916,6 +964,7 @@ function render() {
   renderChart();
   if (selRange) { highlightRange(); showRangeBadge(); }
   renderCamps(D.campaigns);
+  renderAdsets(D.adsets);
   renderAds(D.ads);
   renderReport(D.ads);
   renderScalePlan();
@@ -967,6 +1016,7 @@ function selDay(date, btn) {
   updateSidebarSummary();
   updateKPIs(getMet(date));
   renderCamps(D.campaigns);
+  renderAdsets(D.adsets);
   if (ch) highlightDay(date);
 }
 
@@ -1110,6 +1160,85 @@ function srt(key) {
   const th = [...document.querySelectorAll('th')].find(t => (t.getAttribute('onclick')||'') === `srt('${key}')`);
   if (th) th.classList.add(srtDir > 0 ? 'sort-asc' : 'sort-desc');
   renderCamps(D.campaigns);
+}
+
+/* ── Conjuntos por versão da LP ───────────────────────── */
+function renderAdsets(adsets) {
+  const tbody = document.getElementById('lp-body');
+  const cards = document.getElementById('lp-cards');
+  if (!tbody || !cards) return;
+
+  const rows = (adsets || []).map(a => ({...getCMet(a, selD), lp: a.lp, name: a.name,
+                                         status: a.status, daily_budget: a.daily_budget,
+                                         destino: a.destino}))
+                             .filter(r => r.spend > 0 || r.impressions > 0);
+
+  document.getElementById('lp-badge').textContent =
+    rows.length + ' conjunto' + (rows.length === 1 ? '' : 's');
+
+  if (!rows.length) {
+    cards.innerHTML = '';
+    tbody.innerHTML = '<tr><td colspan="13" class="dim" style="text-align:center;padding:18px">Sem entrega no período</td></tr>';
+    return;
+  }
+
+  // Agrupa por versão da LP
+  const porLp = {};
+  rows.forEach(r => {
+    const k = r.lp || '—';
+    if (!porLp[k]) porLp[k] = {lp: k, spend:0, impressions:0, link_clicks:0, page_view:0,
+                              add_to_cart:0, leads:0, conjuntos:0};
+    const g = porLp[k];
+    g.spend += r.spend; g.impressions += r.impressions; g.link_clicks += (r.link_clicks||0);
+    g.page_view += (r.page_view||0); g.add_to_cart += (r.add_to_cart||0);
+    g.leads += (r.leads||0); g.conjuntos++;
+  });
+  const grupos = Object.values(porLp).map(g => ({
+    ...g,
+    cpl:      g.leads ? g.spend / g.leads : 0,
+    cp_pv:    g.page_view ? g.spend / g.page_view : 0,
+    cp_atc:   g.add_to_cart ? g.spend / g.add_to_cart : 0,
+    lp_conv:  g.page_view ? g.leads / g.page_view * 100 : 0,
+  })).sort((a,b) => a.lp.localeCompare(b.lp));
+
+  // Vencedor = menor CPL entre quem já tem lead
+  const comLead = grupos.filter(g => g.leads > 0);
+  const melhor  = comLead.length ? comLead.reduce((a,b) => a.cpl <= b.cpl ? a : b).lp : null;
+
+  cards.innerHTML = grupos.map(g => `
+    <div class="lp-card${g.lp === melhor ? ' win' : ''}">
+      <div class="lp-card-top">
+        <span class="lp-tag">${esc(g.lp)}</span>
+        ${g.lp === melhor ? '<span class="lp-win">menor CPL</span>' : ''}
+      </div>
+      <div class="lp-cpl" style="color:${g.leads ? '#d6b87a' : 'rgba(255,255,255,.28)'}">
+        ${g.leads ? fmtC(g.cpl) : '—'}
+      </div>
+      <div class="lp-cpl-lbl">CPL · ${fmtN(g.leads)} form${g.leads===1?'':'s'}</div>
+      <div class="lp-row"><span>Gasto</span><span>${fmtC(g.spend)}</span></div>
+      <div class="lp-row"><span>PageView</span><span>${fmtN(g.page_view)}</span></div>
+      <div class="lp-row"><span>Botão LP</span><span style="color:#4ade80">${fmtN(g.add_to_cart)}</span></div>
+      <div class="lp-row"><span>Custo/PV</span><span>${g.cp_pv ? fmtC(g.cp_pv) : '—'}</span></div>
+      <div class="lp-row"><span>Forms/PV</span><span>${fmtP(g.lp_conv)}</span></div>
+    </div>`).join('');
+
+  rows.sort((a,b) => (a.lp||'').localeCompare(b.lp||'') || b.spend - a.spend);
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td><span class="lp-pill">${esc(r.lp || '—')}</span></td>
+      <td class="trunc" title="${esc(r.destino || r.name)}">${esc(r.name)}</td>
+      <td class="tr mono dim">${r.daily_budget ? fmtC(r.daily_budget) : '—'}</td>
+      <td class="tr mono pt">${fmtC(r.spend)}</td>
+      <td class="tr mono">${fmtN(r.page_view || 0)}</td>
+      <td class="tr mono" style="color:#4ade80">${fmtN(r.add_to_cart || 0)}</td>
+      <td class="tr mono" style="color:#d6b87a;font-weight:700">${fmtN(r.leads || 0)}</td>
+      <td class="tr mono">${r.cpl > 0 ? fmtC(r.cpl) : '<span class="dim">—</span>'}</td>
+      <td class="tr mono">${r.cp_page_view > 0 ? fmtC(r.cp_page_view) : '<span class="dim">—</span>'}</td>
+      <td class="tr mono">${fmtP(r.lp_conv || 0)}</td>
+      <td class="tr mono">${fmtC(r.cpm || 0)}</td>
+      <td class="tr mono dim">${fmtN(r.impressions || 0)}</td>
+      <td><span class="bsm ${r.status === 'ACTIVE' ? 'bsm-gn' : 'bsm-pt'}">${r.status === 'ACTIVE' ? 'ATIVO' : 'PAUSADO'}</span></td>
+    </tr>`).join('');
 }
 
 function renderCamps(camps) {
