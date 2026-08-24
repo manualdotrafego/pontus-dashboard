@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-08-23T18:39:13Z",
+  "last_updated": "2026-08-24T01:48:51Z",
   "account": {
     "id": "act_1772556290384735",
     "name": "NBP - Gui Pontus",
@@ -7,7 +7,7 @@
   },
   "date_range": {
     "since": "2026-08-02",
-    "until": "2026-08-23"
+    "until": "2026-08-24"
   },
   "camp_filter": "",
   "summary": {
@@ -2804,9 +2804,9 @@
       "adset_id": "120249652630300297",
       "adset_name": "[AD SET 1.2] - [INTERESES MEIO E FUNDO] -[LP - V2]",
       "ad_on": true,
-      "thumbnail": "https://external-ord5-1.xx.fbcdn.net/emg1/v/t13/16911948220735365989?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQKudIX9yueNS95th51XgCfbfw-bkoAgauaPD6BqaSgraWSLDzdE1Ue-l5rKoNSg7IbLIQ2HgBx32WSIqj6lGIwwh40vIAl96p3Z9a5Yf9lnsgBPv_0z95Pbz9FFF4SXOmg7NjPT-lrIdrbFsKfpoot1&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=mEOZvAnBcHsNDVrHe7b_yw&_nc_oc=Adovbr7msTUvzdUX4J1nSkqlCyJo0GGeN_wEobb32whFVsJoU7NuSapOKV5XlqP5RVw&ccb=13-1&oh=06_Q3_CAY0PtdYmd73v5wGJRqhNl7_XdYa-8aU0FY8qjkx7C-me&oe=6A8D33FC&_nc_sid=58080a",
+      "thumbnail": "https://external-sea1-1.xx.fbcdn.net/emg1/v/t13/16911948220735365989?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQKudIX9yueNS95th51XgCfbfw-bkoAgauaPD6BqaSgraWSLDzdE1Ue-l5rKoNSg7IbLIQ2HgBx32WSIqj6lGIwwh40vIAl96p3Z9a5Yf9lnsgBPv_0z95Pbz9FFF4SXOmg7NjPT-lrIdrbFsKfpoot1&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=UdZp9Jy-22hQ9MO97Buk1A&_nc_oc=AdqT-tfvNPIw-zo20xUVL4Vd5LvJlBQ8jOKVki6WhgWeQGPQBOxewvuPGtnZurGVE38&ccb=13-1&oh=06_Q3_CARZH4bYHu0-aoWa9iSrTsvdEGSHfgWoohKriElCFjeFp&oe=6A8D6C3C&_nc_sid=58080a",
       "video_id": "",
-      "preview_url": "https://business.facebook.com/ads/api/preview_iframe.php?d=AQL4lOL5rXWHq47NYydGSPaHbnXxEELQpjeCSEMVu4B_OYFy8byVDO3wTmRy3Yt7bzBAdUzCo-Fy2lCC3e11G_GMNECliC8jsSKjwH5GTFn72MiI-HZPMM4UOnscdv7k7ZWy_c92O38uluyh0AqBZ9lO-Jz84n045YJQadJwd5jzq0CBhx98PCQmaiQcqanIiTI7VJcxtEo8I8exixDcW1gaIwrblqHcN2zZW7cDNRXzkiJ-ylBurYXSAVwrkmTI7ADmgaAaZBoDrDQPM7NCoDafuxnJ7RPM9oNR_8tAO6w7vJFvLoT_R1sSy2IYteDCULWGaT7J9XnfzaEk2hdy4zswa5E9aacqUcYwGjvZ6Nc2CnNRtSA92gbKxMwyT5_AvNs9Sz4SDVbeIxR6BSwjgOSHmDkXy1fkeSv9-2QxpXREJ5-aJycucdM558D5w4-GfEU&t=AQKVEyv8VzgxJhL-1fI"
+      "preview_url": "https://business.facebook.com/ads/api/preview_iframe.php?d=AQJHn3rLJXjDG5_TxFDN3UWsiHCFGbgqhMwTF8rm7PsEFDBxYDzPMluDIl8FewIYBw1mg8xuB2aUWuTi7VejVB0aP26Uz5udhsv8aUanG0SZYiNCBX_EtMKRXBuo8pmfm7YYoZGDVkAjFNX9TVD6QObzXkeTUmSq1IdcuHFNa-JiF94xL0Q4Pte5MWBtfLrLZvXYsZRijERW2p7FwVrTHXUMvvGvGPoRRhKzGxqUW-h3trmyT-az_gt0yBfxseZ05Xgd_MY8F_g3bVWTUF8Ow9BVkZpldQT2l8Dsxf0M8A7l6ylEyxkeGkRTaq_aUTCeDc9TUa8oGFBlZN4_bFrhAx2ooh7FVhagiW3QRZpjlFwzJOqkK0mgivJxFFxkaApJx7BLb6ugLhwk6F6C1xf0v7Y3a2NXA6C701SFusM1i4AEFm_zeGc2eHhZl4pJDMJfwQo&t=AQIqLFrPa8tSG0KSIRU"
     },
     {
       "spend": 427.5,
@@ -2846,7 +2846,7 @@
       "adset_id": "120249652640740297",
       "adset_name": "[AD SET 1.3] - [INTERESES MEIO E FUNDO] -[LP - V3]",
       "ad_on": false,
-      "thumbnail": "https://external-ord5-1.xx.fbcdn.net/emg1/v/t13/16963059120373706234?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIeOFPtK-WxN3apcFVZCVNNVU_8KugFUzuyY3orhOokkbTsrmITl96j2dn91TjtiBtm4AE-bsU0YPCMjGLaAdZOkX1rXD0O-3sArfSIXQg7kQbdexDxf7Pc1uS-h4UY-PCaraHGHC-3KQK-tLAYCRe0&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=mEOZvAnBcHsNDVrHe7b_yw&_nc_oc=Adq02ZydgmzZXe6opwqz-yUWvrjIvpGJrpQZ5TaF1b2n_nS-jMRkVfU61pRuFGvSf8U&ccb=13-1&oh=06_Q3_CAQmHvd0xKDMfQdRk9Ro5M3gr93OmChMR_PoMOJG0OVCr&oe=6A8D133D&_nc_sid=58080a",
+      "thumbnail": "https://external-sea1-1.xx.fbcdn.net/emg1/v/t13/16963059120373706234?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIeOFPtK-WxN3apcFVZCVNNVU_8KugFUzuyY3orhOokkbTsrmITl96j2dn91TjtiBtm4AE-bsU0YPCMjGLaAdZOkX1rXD0O-3sArfSIXQg7kQbdexDxf7Pc1uS-h4UY-PCaraHGHC-3KQK-tLAYCRe0&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=UdZp9Jy-22hQ9MO97Buk1A&_nc_oc=Adpt4O04thEdazVegFMPxta7WZmzLtJWBFpKk4rGnZy2R4J9zG3lRaWJQL27PJgho-Q&ccb=13-1&oh=06_Q3_CAQG-H8x2xVOnOT-FQD6RbbOGlL8ZuSQRVlNacxcFqFss&oe=6A8D83BD&_nc_sid=58080a",
       "video_id": "",
       "preview_url": ""
     },
@@ -2888,9 +2888,9 @@
       "adset_id": "120249848839190297",
       "adset_name": "[AD SET 1.3] - [INTERESES MEIO E FUNDO] -[LP - V3 + [AD NOVO]",
       "ad_on": true,
-      "thumbnail": "https://external-ord5-1.xx.fbcdn.net/emg1/v/t13/16813339610189250633?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIweehdUMurN1rNq5XF1yC8Hnuo3C8ViEgUg3uhNSkLd40zKXBaYj1jt1XwbQ4JoDTq8M3IJiPBg4EEMsktXcgc-5tGHIB4usvdkfCZ3SIJ49u8uVvd_SHfwdYLBSlNF2Jb9tBMH_cb5i7XfV800nrm&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=mEOZvAnBcHsNDVrHe7b_yw&_nc_oc=AdrT_sWd8DS58qSSm0olRZG7y5v41m72urbkJFV53pV0tN83cKwsLxSZfuB5Bex9F1M&ccb=13-1&oh=06_Q3_CAd2YZgBt7ARRGifl9mgfXBjmZ2MmsNI-8Qh32yN6CC4v&oe=6A8D2C94&_nc_sid=58080a",
+      "thumbnail": "https://external-sea1-1.xx.fbcdn.net/emg1/v/t13/16813339610189250633?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIweehdUMurN1rNq5XF1yC8Hnuo3C8ViEgUg3uhNSkLd40zKXBaYj1jt1XwbQ4JoDTq8M3IJiPBg4EEMsktXcgc-5tGHIB4usvdkfCZ3SIJ49u8uVvd_SHfwdYLBSlNF2Jb9tBMH_cb5i7XfV800nrm&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=UdZp9Jy-22hQ9MO97Buk1A&_nc_oc=Adp6aOOF1vR1YJklfwbuTK7c5HO86nsO_R5ulspTeEf1luFsJrLGOHYcJ1WxiB0n3wM&ccb=13-1&oh=06_Q3_CAegolcQGHESG7wDtHjxXkoAaN8MPftgBtIyKMatJcytf&oe=6A8D9D14&_nc_sid=58080a",
       "video_id": "",
-      "preview_url": "https://business.facebook.com/ads/api/preview_iframe.php?d=AQIROnugpKNABuNRLQjauqojTTsieGms-pHMafFjp41PyxnWgAaFFmrUzO8_9ruwwAba6lR1jpbYUMqu8OyRk-wEp9Zj2oUD9rrL3SKALzRyScgBHatyehdvMv4P-3R0GigFeXgih5AvIc3cRZUjojrzP1hwrbVoBBrOl1I5Dy-QtkePrP2Dda3VTxUrnw8JQT7gKhzwimG45TCMUMnOMbeu3tuXlr38a15jQQrU1Sae7B-QrbPOqHZYl6lh2Sfrsnws1EiH5ZU2cniV4qsGiSVa9eQzb_TlIC-JGJggO6IYm6rmzVtjd-kW00di9bYh6taBQUjgeJdh0tgqQm1FLqwK3H8gmXb2IF9cu547-QiOdJ_soxsGpvhIldMmhj-L7G1-JrWFFGZmjnCbAde1XAtQxyUFCDvuN4_uiulGddNPfHLlhyuSObxBx9gkNhP9ypE&t=AQL2WIQg6tgvYOllMTw"
+      "preview_url": "https://business.facebook.com/ads/api/preview_iframe.php?d=AQLHhF7DyVJxyUQXLMPAc4uy87ldZvwmA2OHXbsIodgq85R0_CAbS1NyyjRun9VZMrg2B0hyNmEtEAyDOZLViLdpNWn63br9jVcPrAq0V4AaCYaGmrGW928elOk-pBVYXLc7KZtugJW60pXij2dKebuyECxiy3Ov6JWyMx4SdeLrjL5O5OZHCVs1ISaXIXSQgV7sis3SVOhR0LBDUHd_wuH9izG9MAKX2QTO-gBz24_sZ2LhRkhxJU0M7ozfufYOCpj5t9ECxdf_IbiEFfU3jWQrfoohO7w5XIHfmvF7xpHswrihi8sSafq5vl-z-3w6cgiThz9Gi6S07lhq658Bm3vZLVz2uLpLewTEu7fMyEytERkw3N0tfpKM1gnwArXk3GwFMisDJ9n9-7ZfkB-owYqh-33AhMU8xvuETOTbCdUrVS_1yaF0IKexIS4X_qYRZ0U&t=AQJjWMWKfOlmuYWr9ls"
     },
     {
       "spend": 142.17,
@@ -2930,9 +2930,9 @@
       "adset_id": "120249848839190297",
       "adset_name": "[AD SET 1.3] - [INTERESES MEIO E FUNDO] -[LP - V3 + [AD NOVO]",
       "ad_on": true,
-      "thumbnail": "https://external-ord5-1.xx.fbcdn.net/emg1/v/t13/16963059120373706234?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIeOFPtK-WxN3apcFVZCVNNVU_8KugFUzuyY3orhOokkbTsrmITl96j2dn91TjtiBtm4AE-bsU0YPCMjGLaAdZOkX1rXD0O-3sArfSIXQg7kQbdexDxf7Pc1uS-h4UY-PCaraHGHC-3KQK-tLAYCRe0&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=mEOZvAnBcHsNDVrHe7b_yw&_nc_oc=Adq02ZydgmzZXe6opwqz-yUWvrjIvpGJrpQZ5TaF1b2n_nS-jMRkVfU61pRuFGvSf8U&ccb=13-1&oh=06_Q3_CAQmHvd0xKDMfQdRk9Ro5M3gr93OmChMR_PoMOJG0OVCr&oe=6A8D133D&_nc_sid=58080a",
+      "thumbnail": "https://external-sea1-1.xx.fbcdn.net/emg1/v/t13/16963059120373706234?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIeOFPtK-WxN3apcFVZCVNNVU_8KugFUzuyY3orhOokkbTsrmITl96j2dn91TjtiBtm4AE-bsU0YPCMjGLaAdZOkX1rXD0O-3sArfSIXQg7kQbdexDxf7Pc1uS-h4UY-PCaraHGHC-3KQK-tLAYCRe0&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=UdZp9Jy-22hQ9MO97Buk1A&_nc_oc=Adpt4O04thEdazVegFMPxta7WZmzLtJWBFpKk4rGnZy2R4J9zG3lRaWJQL27PJgho-Q&ccb=13-1&oh=06_Q3_CAQG-H8x2xVOnOT-FQD6RbbOGlL8ZuSQRVlNacxcFqFss&oe=6A8D83BD&_nc_sid=58080a",
       "video_id": "",
-      "preview_url": "https://business.facebook.com/ads/api/preview_iframe.php?d=AQLnJ4Z_-Kz2igxZen9XXtRsISAiCbtdKxbasD_TKHXik3AxJ0D7VVecGT50pLZIFd-hDKQUpWXFrX99hJNsU9txb8pNGJi3WqIC7DgNizF_kZNAeTrkjFFJJ5h_JJ0dwsrx4doQN4bbC3FTUvmIMBPEa7iPa6yyRZ4Gg2QvZQIsdVKyYVNWVamNa7xWwEZogkKpIjYFogVKGFWvL9EnU8AwzBprYUlsNI4dKVu3_TOwRpVFYuByj3gB5k5EgqRj_EYvjSngBHwk9xkey1yh7sFSr8dH6mHeTiJr5Cxg8aH6BIzHLFSLQVyQpT3oYj3nKwTTCnWxjzhEyjfauaFfvr6KCvBSeRykwR5SQCyXdvT1jf_j6NjJsvMOLz-cy0JA-ykNnEutXiqPVosbA9DrrcdJfnUFNg8ARL90QylOE0OcP7q4JU9kbuB025KegxRPPsM&t=AQJQ7WuMKzqT6tnv0i8"
+      "preview_url": "https://business.facebook.com/ads/api/preview_iframe.php?d=AQLNVA6MWPAIegt5wRxPp1xHVWqbzmhtNwTYyeMqNIO9NO-ikuT_BcFlkErsG2dxeN2v_G6m8JH-eNsjbZIpUbq5UWifHYwz5tTYA8cdIpW6LF-ELSmweEd-BUPiJYm990A1yx3Rq7V6VoMijLd344GqEYOR-Y5qcqw2ccQsSs5h1YXsRCHMKcXbDuwOOoibC7duH4ED-cehuRMht9HBoye1R-VnVCIXWhSvSUurm0tMzL3yAxPlk5823yiHdDP1mwhli6vQB_lVEy4UdQAUUwiOpBWdabyrx2xHc6Sw5FekhCfZ7lPPeeNn5kdvOQUu5JMiWDIsuEDtqBj-rtolruzX9GEumM20Pk3LMBSS3dbRjgtbYRjM9Tdx_V5OHjhirh8kb03q2459W_CkJMOEKYqng12Vqp1UBUV8r8S579sADkZ_wiFuwtD41ILtPj-JVzk&t=AQJB7ndw-Uexdif0Nqk"
     },
     {
       "spend": 136.24,
@@ -2972,7 +2972,7 @@
       "adset_id": "120249631175490297",
       "adset_name": "[AD SET 1.1] - [INTERESES MEIO E FUNDO] -[LP - V1]",
       "ad_on": false,
-      "thumbnail": "https://external-ord5-1.xx.fbcdn.net/emg1/v/t13/15095549360100375997?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQLSdYwRIhuSu1Ubh0Knq3IoPxhHKycATZdfiLUo8BpCI7oXl1OFwI2Iv9DtqdEgd2gvgq9wCKuJCkT6LVC0LcenxFt0dhKm2jKHTmeMQsiUdHbOnK07Ol2Y4j8nvzP_cafP5ZoYGj_XJq32sFA83bm_&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=mEOZvAnBcHsNDVrHe7b_yw&_nc_oc=AdpV4FZapYMMBOg75vncLo6zGcl9CfATmcZKZVBxEZQyWcy4ZvFkiFkwH0lJDaXJsr0&ccb=13-1&oh=06_Q3_CAXn14Jgerfk0GkBtiSwtyzdhHnZDB6WAAoL4nII2EwKl&oe=6A8D3313&_nc_sid=58080a",
+      "thumbnail": "https://external-sea1-1.xx.fbcdn.net/emg1/v/t13/15095549360100375997?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQLSdYwRIhuSu1Ubh0Knq3IoPxhHKycATZdfiLUo8BpCI7oXl1OFwI2Iv9DtqdEgd2gvgq9wCKuJCkT6LVC0LcenxFt0dhKm2jKHTmeMQsiUdHbOnK07Ol2Y4j8nvzP_cafP5ZoYGj_XJq32sFA83bm_&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=UdZp9Jy-22hQ9MO97Buk1A&_nc_oc=AdoW3HlkjdvLCUFfj9pOqkabyloi6j99FHTnt8cu0xh2gv0kU7TdvXgosbaaat9VaNE&ccb=13-1&oh=06_Q3_CAcKounPyMN8PNLOZk4hTlO6mjnLlAFCX7L1bmLP05n9K&oe=6A8D6B53&_nc_sid=58080a",
       "video_id": "",
       "preview_url": ""
     }
